@@ -8,7 +8,7 @@ An attempt to create a shielded-swap CLI variant for SE.
 
 ## Quick-start
 
-### Installing Gum
+### Installing gum
 
 ```
 go install github.com/charmbracelet/gum@latest
