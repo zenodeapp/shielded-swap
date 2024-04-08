@@ -23,3 +23,9 @@ curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
 ### Installing namada
 
 See: https://docs.namada.net/introduction/install.
+
+### Run wizard
+
+```
+bash ./wizard.sh
+```
