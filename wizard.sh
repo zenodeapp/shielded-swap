@@ -7,9 +7,12 @@ if ! command -v "gum" >/dev/null 2>&1; then
   exit 1
 fi
 
+# Import gum styling
+source _styling.sh
+
 # Introduction
-gum style	--foreground 1500 --border-foreground 1500 --border double --margin "1 2" --padding "2 4" \
-	'SHIELDED SWAP WIZARD' \
+gum style	--border rounded \
+	'# SHIELDED SWAP WIZARD' \
   '' \
   'Scripted by ZEN; utilizing the gum tool by charmbracelet.' \
   'See: https://github.com/zenodeapp/shielded-swap and' \
