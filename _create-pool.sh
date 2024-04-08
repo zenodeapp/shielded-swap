@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Root of the current repository
+REPO_ROOT=$(cd "$(dirname "$0")" && pwd)
+
 # Source default variables
-source ../_default_variables.sh
+source $REPO_ROOT/_default_variables.sh
 
 # Function to create a json file for a 5:1 pool for OSMO:NAAN
 create_pool_json() {
@@ -31,7 +34,7 @@ fi
 
 # Create the pool JSON and create the pool
 create_pool_json "$uosmo_amount" "$naan_denom" "$naan_amount"
-osmosisd tx gamm create-pool --chain-id osmo-test-5 --pool-file ./pool.json --from $OSMO_KEY --log_format json --yes
+osmosisd tx gamm create-pool --chain-id osmo-test-5 --pool-file $REPO_ROOT/pool.json --from $OSMO_KEY --log_format json --yes
 
 # TODO: We need to capture the created pool ID and whatever details that are important
 

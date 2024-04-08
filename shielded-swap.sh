@@ -1,7 +1,10 @@
 #!/bin/bash
 
+# Root of the current repository
+REPO_ROOT=$(cd "$(dirname "$0")" && pwd)
+
 # Source default variables
-source ./_default_variables.sh
+source $REPO_ROOT/_default_variables.sh
 
 # Read pool data from pool-data.json
 
@@ -11,25 +14,55 @@ read -p "Which shielded address (znam...) should receive this?: " shielded_namad
 read -p "Which osmosis address would you like to send this to (for transparency use a dummy address): " osmosis_address
 read -p "Enter the amount of naan to send: " naan_amount
 
+# Temporary defaults start
+
+if [ -z "$namada_address" ]; then
+  namada_address="zen"
+fi
+
+if [ -z "$shielded_namada_address" ]; then
+  shielded_namada_address="znam1qqtq5u90nvgq7x0pvfuayykg34td97mjs8p0x333e90rvq5e0lhs43m0gpaxh3pvkqqdpdsjxv83n"
+fi
+
+if [ -z "$osmosis_address" ]; then
+  osmosis_address="osmo1j73g96rdw2vlwvkuu733tcejzyvhkp4nlsdptg"
+fi
+
+if [ -z "$naan_amount" ]; then
+  naan_amount="10"
+fi
+
+# Temporary defaults end
+
 # Check osmosis address balance of the naan token (for the specified channel)
 
-namada client ibc-transfer --source $namada_address --receiver $osmosis_address --token naan --amount $naan_amount --channel-id "channel-$COUNTER_CHANNEL_ID"
+# namada client ibc-transfer --source $namada_address --receiver $osmosis_address --token naan --amount $naan_amount --channel-id "channel-$COUNTER_CHANNEL_ID"
 
 # Loop to check if osmosis_address received the amount, timeout in 2 min
 
 # 2. Swap naan to osmo in the created pool when osmosis_address received the amount
 
+
 # AMOUNT RECEIVED
-$AMOUNT_RECEIVED=10
+AMOUNT_RECEIVED=10
 
 # 3. Generate IBC memo and extract it
-TEMP_PATH=./temp/
-namada client ibc-gen-shielded --target "$shielded_namada_address" --channel-id "channel-$COUNTER_CHANNEL_ID" --token "uosmo" --amount $naan_amount --output-folder-path $TEMP_PATH
-# If we're sending NAAN instead, add this if we have enough time:
-# namada client ibc-gen-shielded --target "$shielded_namada_address" --channel-id "channel-$COUNTER_CHANNEL_ID" --token "transfer/$CHANNEL_ID/tnam1qxvg64psvhwumv3mwrrjfcz0h3t3274hwggyzcee" --amount $naan_amount --output-folder-path  $TEMP_PATH
-$IBC_MEMO=24042
+source $REPO_ROOT/_ibc-memo.sh
+
+echo ""
+echo "Generating IBC memo..."
+
+IBC_MEMO_FILE=$(gen_ibc_memo "$shielded_namada_address" "uosmo" "$AMOUNT_RECEIVED") # call with naan if we do it the other way around
+
+IBC_MEMO=$(head -n 1 $IBC_MEMO_FILE)
+
+echo "Generated: $IBC_MEMO"
+echo ""
 
 # 4. Send received osmosis amount back to namada_address
-osmosisd tx ibc-transfer transfer transfer "channel-$CHANNEL_ID" $shielded_namada_address "$AMOUNT_RECEIVED"uosmo --memo $IBC_MEMO --from $OSMO_KEY --node https://osmosis-testnet-rpc.polkachu.com:443 --chain-id osmo-test-5 --fees 1000uosmo
+echo Sending "$AMOUNT_RECEIVED"uosmo to $shielded_namada_address...
+osmosisd tx ibc-transfer transfer transfer "channel-$CHANNEL_ID" $shielded_namada_address "$AMOUNT_RECEIVED"uosmo --memo $IBC_MEMO --from $OSMO_KEY --node https://osmosis-testnet-rpc.polkachu.com:443 --chain-id osmo-test-5 -y --fees 1000uosmo
 
-# 5. Check if expected osmo is received
+# 5. shielded sync
+
+# 6. Check if uosmo balance got through
