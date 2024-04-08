@@ -51,11 +51,7 @@ source $REPO_ROOT/_ibc-memo.sh
 
 echo ""
 echo "Generating IBC memo..."
-
-IBC_MEMO_FILE=$(gen_ibc_memo "$shielded_namada_address" "uosmo" "$AMOUNT_RECEIVED") # call with naan if we do it the other way around
-
-IBC_MEMO=$(head -n 1 $IBC_MEMO_FILE)
-
+IBC_MEMO=$(gen_ibc_memo "$shielded_namada_address" "uosmo" "$AMOUNT_RECEIVED") # call with naan if we do it the other way around
 echo "Generated: $IBC_MEMO"
 echo ""
 

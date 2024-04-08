@@ -14,10 +14,15 @@ gen_ibc_memo() {
   AMOUNT=$3
 
   if [ $TOKEN = "uosmo" ]; then
-    output=$(namada client ibc-gen-shielded --target "$TARGET" --channel-id "channel-$COUNTER_CHANNEL_ID" --token "uosmo" --amount "$AMOUNT" --output-folder-path "$TMP_PATH" | grep -oP "(?<=to ).*$")
+    file_output=$(namada client ibc-gen-shielded --target "$TARGET" --channel-id "channel-$COUNTER_CHANNEL_ID" --token "uosmo" --amount "$AMOUNT" --output-folder-path "$TMP_PATH" | grep -oP "(?<=to ).*$")
   else
-    output=$(namada client ibc-gen-shielded --target "$TARGET" --channel-id "channel-$COUNTER_CHANNEL_ID" --token "transfer/channel-$CHANNEL_ID/$NAAN_DENOM" --amount "$AMOUNT" --output-folder-path  "$TMP_PATH" | grep -oP "(?<=to ).*$")
+    file_output=$(namada client ibc-gen-shielded --target "$TARGET" --channel-id "channel-$COUNTER_CHANNEL_ID" --token "transfer/channel-$CHANNEL_ID/$NAAN_DENOM" --amount "$AMOUNT" --output-folder-path  "$TMP_PATH" | grep -oP "(?<=to ).*$")
   fi
 
-  echo $output
+  IBC_MEMO=$(head -n 1 $file_output)
+
+  # Remove the generated file (garbage collection)
+  rm $file_output
+
+  echo $IBC_MEMO
 }
