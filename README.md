@@ -11,10 +11,19 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - [gum](https://github.com/charmbracelet/gum)
 - [osmosisd](https://docs.osmosis.zone/osmosis-core/osmosisd)
 - [namada](https://docs.namada.net/introduction/install)
+- [jq](https://jqlang.github.io/jq/download)
 
 ## Quick-start
 
-### 1. Install gum
+### 1. Install jq
+
+```
+sudo apt-get install jq
+```
+
+> For other methods to install jq, see: https://jqlang.github.io/jq/download.
+
+### 2. Install gum
 
 ```
 go install github.com/charmbracelet/gum@latest
@@ -22,17 +31,17 @@ go install github.com/charmbracelet/gum@latest
 
 > For other methods to install gum, see: https://github.com/charmbracelet/gum.
 
-### 2. Install osmosisd
+### 3. Install osmosisd
 
 ```
 curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
 ```
 
-### 3. Install namada
+### 4. Install namada
 
-See: https://docs.namada.net/introduction/install.
+> See: https://docs.namada.net/introduction/install.
 
-### 4. Run the wizard!
+### 5. Run the wizard!
 
 ```
 bash ./wizard.sh
