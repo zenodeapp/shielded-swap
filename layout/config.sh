@@ -1,31 +1,5 @@
 #!/bin/bash
 
-# CONFIG_NAM=".nam (value: $NAM)"
-# CONFIG_NAM_IBC=".namIbc (value: $NAM_IBC)"
-# CONFIG_NAM_CHANNEL=".namChannel (value: $NAM_CHANNEL)"
-# CONFIG_OSMO_CHANNEL=".osmoChannel (value: $OSMO_CHANNEL)"
-# CONFIG_OSMO_POOL_ID=".osmoPoolId (value: $OSMO_POOL_ID)"
-# CONFIG_NAM_RPC=".namRpc (value: $NAM_RPC)"
-# CONFIG_OSMO_RPC=".osmoRpc (value: $OSMO_RPC)"
-# CONFIG_NAM_TRANSPARENT=".addresses.namTransparent (value: $NAM_TRANSPARENT)"
-# CONFIG_NAM_SHIELDED=".addresses.namShielded (value: $NAM_SHIELDED)"
-# CONFIG_NAM_VIEWING_KEY=".addresses.namViewingKey (value: $NAM_VIEWING_KEY)"
-# CONFIG_OSMO_ADDRESS=".addresses.osmoAddress (value: $OSMO_ADDRESS)"
-# CONFIG_SHIELDED_BROKEN=".addresses.shieldedBroken (value: $SHIELDED_BROKEN)"
-
-# CONFIG_NAM=".nam"
-# CONFIG_NAM_IBC=".namIbc"
-# CONFIG_NAM_CHANNEL=".namChannel"
-# CONFIG_OSMO_CHANNEL=".osmoChannel"
-# CONFIG_OSMO_POOL_ID=".osmoPoolId"
-# CONFIG_NAM_RPC=".namRpc"
-# CONFIG_OSMO_RPC=".osmoRpc"
-# CONFIG_NAM_TRANSPARENT=".addresses.namTransparent (value: $NAM_TRANSPARENT)"
-# CONFIG_NAM_SHIELDED=".addresses.namShielded (value: $NAM_SHIELDED)"
-# CONFIG_NAM_VIEWING_KEY=".addresses.namViewingKey (value: $NAM_VIEWING_KEY)"
-# CONFIG_OSMO_ADDRESS=".addresses.osmoAddress (value: $OSMO_ADDRESS)"
-# CONFIG_SHIELDED_BROKEN=".addresses.shieldedBroken (value: $SHIELDED_BROKEN)"
-
 # Assuming config.json is your JSON file
 config_file="config/config.json"
 
