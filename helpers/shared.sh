@@ -20,6 +20,41 @@ get_osmosis_balance() {
   fi
 }
 
+get_osmosis_pool_info() {
+  POOL_ID=$1
+
+  POOL_INFO="$(osmosisd query gamm pool $POOL_ID --chain-id $OSMO_CHAIN_ID --node $OSMO_RPC --output json 2>/dev/null)"
+  
+  echo $POOL_INFO
+}
+
+get_osmosis_pool_info_key() {
+  POOL_INFO=$1
+  KEY=$2
+
+  if [ -z $POOL_INFO ]; then
+    echo ""
+  elif [ $KEY = "id" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.id'
+  elif [ $KEY = "address" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.address'
+  elif [ $KEY = "denom0" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.total_shares.denom'
+  elif [ $KEY = "swap_fee" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.pool_params.swap_fee'
+  elif [ $KEY = "exit_fee" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.pool_params.exit_fee'
+  elif [ $KEY = "denom1" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.pool_assets[0].token.denom'
+  elif [ $KEY = "amount1" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.pool_assets[0].token.amount'
+  elif [ $KEY = "denom2" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.pool_assets[1].token.denom'
+  elif [ $KEY = "amount2" ]; then
+    echo "$POOL_INFO" | jq -r '.pool.pool_assets[1].token.amount'
+  fi
+}
+
 # Get namada balance using namada client (namadac)
 get_namada_balance() {
   DENOM=$1
