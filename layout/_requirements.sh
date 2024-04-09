@@ -16,7 +16,7 @@ echo "## Requirements:
 |---------------------|----------------------|---------------------------------------------------|
 |osmosisd             |$osmosis_available    |'https://docs.osmosis.zone/osmosis-core/osmosisd'  |
 |namada               |$namada_available     |'https://docs.namada.net/introduction/install'     |
-|jq                   |$jq_available         |'https://jqlang.github.io/jq/download/'            |
+|jq                   |$jq_available         |'https://jqlang.github.io/jq/download'             |
 " | gum format
 
 echo ""
