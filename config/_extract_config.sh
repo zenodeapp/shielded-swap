@@ -24,14 +24,12 @@ if ! jq -e '. |
     has("namRpc") and
     has("osmoChannel") and
     has("osmoPoolId") and
-    has("addresses") and
     has("shieldedBroken") and
     has("osmoRpc") and
-    (.addresses |
     has("namTransparent") and
     has("namShielded") and
     has("namViewingKey") and
-    has("osmoAddress"))' "$CONFIG_FILE" > /dev/null 2>&1
+    has("osmoAddress")' "$CONFIG_FILE" > /dev/null 2>&1
 then
     gum log --structured --level error "Missing required key(s) in $CONFIG_FILE."
     exit 1
@@ -45,10 +43,10 @@ export NAM_RPC=$(jq -r '.namRpc' $CONFIG_FILE)
 export OSMO_CHANNEL=$(jq -r '.osmoChannel' $CONFIG_FILE)
 export OSMO_POOL_ID=$(jq -r '.osmoPoolId' $CONFIG_FILE)
 export OSMO_RPC=$(jq -r '.osmoRpc' $CONFIG_FILE)
-export NAM_TRANSPARENT=$(jq -r '.addresses.namTransparent' $CONFIG_FILE)
-export NAM_SHIELDED=$(jq -r '.addresses.namShielded' $CONFIG_FILE)
-export NAM_VIEWING_KEY=$(jq -r '.addresses.namViewingKey' $CONFIG_FILE)
-export OSMO_ADDRESS=$(jq -r '.addresses.osmoAddress' $CONFIG_FILE)
+export NAM_TRANSPARENT=$(jq -r '.namTransparent' $CONFIG_FILE)
+export NAM_SHIELDED=$(jq -r '.namShielded' $CONFIG_FILE)
+export NAM_VIEWING_KEY=$(jq -r '.namViewingKey' $CONFIG_FILE)
+export OSMO_ADDRESS=$(jq -r '.osmoAddress' $CONFIG_FILE)
 export SHIELDED_BROKEN=$(jq -r '.shieldedBroken' $CONFIG_FILE)
 
 # Useful

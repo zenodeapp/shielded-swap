@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Extract configurations
+source config/_extract_config.sh
+
+# Greeting
+bash menu/_greeting.sh
+
 # Menu
 CHOICE_CONFIG="1. Configurations"
 CHOICE_OSMO_POOL="2. Create an osmosis pool"
@@ -10,7 +16,7 @@ CHOICE_EXIT="5. Exit"
 MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_CONFIG" "$CHOICE_OSMO_POOL" "$CHOICE_SHIELDED_ACTION" "$CHOICE_BALANCE" "$CHOICE_EXIT")
 
 if [ "$MENU_CHOICE" = "$CHOICE_CONFIG" ]; then
-  echo "configurations"
+  bash menu/configurations.sh
 elif [ "$MENU_CHOICE" = "$CHOICE_OSMO_POOL" ]; then
   echo "create a pool"
 elif [ "$MENU_CHOICE" = "$CHOICE_SHIELDED_ACTION" ]; then

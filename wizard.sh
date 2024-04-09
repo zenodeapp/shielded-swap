@@ -28,11 +28,5 @@ gum style	--border rounded --margin "1 2" --padding "2 4" \
 # Check requirements
 bash $REPO_ROOT/_requirements.sh
 
-# Extract configurations
-source $REPO_ROOT/config/_extract_config.sh
-
-# Greeting
-bash $REPO_ROOT/menu/_greeting.sh
-
 # Menu
-bash $REPO_ROOT/menu/first_screen.sh
+bash $REPO_ROOT/menu/main.sh
