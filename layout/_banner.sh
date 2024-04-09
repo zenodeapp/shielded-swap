@@ -3,8 +3,7 @@
 VERSION=v1.0.0
 
 gum style	--border rounded --margin "1 2" --padding "2 4" \
-	'# SHIELDED SWAP WIZARD' \
-  "$VERSION" \
+	"# SHIELDED SWAP WIZARD ($VERSION)" \
   '' \
   'Scripted by ZEN; utilizing the gum tool by charmbracelet.' \
   'See: https://github.com/zenodeapp/shielded-swap and' \

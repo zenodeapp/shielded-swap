@@ -1,89 +1,73 @@
 #!/bin/bash
 
-# Assuming config.json is your JSON file
-config_file="config/config.json"
+# Source shared functions
+source helpers/shared.sh
 
-prompt_change() {
-  keys="$1"
-  local new_values=()
+# Source set functions (also validates configurations)
+source config/set.sh
 
-  for ((i=0; i<${#keys[@]}; i++)); do
-    key=${keys[$i]}
-    current_value=$(jq -r "$key" "$config_file")
+# Create a temporary file and save all the current key-value pairs of the config.json file in a temporary file
+CONFIG_TMP=".tmp/config.tmp"
+rm $CONFIG_TMP 2>/dev/null
 
-    new_value=$(gum input --placeholder "Enter a new value for $key (current: $current_value)")
+while IFS= read -r key; do
+  CURRENT_VALUE="$key - $(jq -r ".$key" "$CONFIG_FILE")"
+  echo "$CURRENT_VALUE" >> "$CONFIG_TMP"
+done < "$KEYS_FILE"
 
-    new_values["$key"]="$new_value"
-  done
+# Give user all the editable choices
+CONFIG_CHOICES=$(cat "$CONFIG_TMP" | gum filter --no-limit --header "Which values do you want to change? Use [TAB] or [CTRL+SPACE] to select multiple fields.")
 
-  echo "Summary of changes:"
-  for key in "${!new_values[@]}"; do
-      echo "  $key: ${new_values[$key]}"
-  done
-}
-
-# Define the filename for the modified lines
-output_file="config/modified_config.txt"
-rm $output_file
-
-# Loop through each line in the file
-while IFS= read -r line; do
-    # Append " - the_value_for_this_key" to the line
-    new_line="$line - $(jq -r "$line" "$config_file")"
-    # Output the modified line to the output file
-    echo "$new_line" >> "$output_file"
-done < "config/config.txt"
-
-CONFIG_CHOICES=$(cat config/modified_config.txt | gum filter --no-limit --header "Which values do you want to change? Use [TAB] or [CTRL+SPACE] to select multiple fields.")
-
-echo "$CONFIG_CHOICES"
-
-# Initialize arrays for keys and values
+# Initialize the keys and values arrays and only add the chosen configurations
 keys=()
 values=()
-
-# Read each line and split into key and value
 while IFS='-' read -r key value; do
-    # Trim leading and trailing whitespace from key and value
     key=$(echo "$key" | awk '{$1=$1};1')
     value=$(echo "$value" | awk '{$1=$1};1')
 
-    # Add key and value to arrays
     keys+=("$key")
     values+=("$value")
 done <<< "$CONFIG_CHOICES"
 
-# Prompt for new values for each key-value pair
+# Prompt user's input for each key-value pair
+keys_edited=()
+values_edited=()
 for ((i=0; i<${#keys[@]}; i++)); do
-    key="${keys[$i]}"
-    current_value="${values[$i]}"
+  key="${keys[$i]}"
+  current_value="${values[$i]}"
 
+  if [ ! -z "$key" ]; then
     # Prompt for a new value
-    new_value=$(gum input --placeholder "Enter a new value for $key (current: $current_value)")
+    new_value=$(gum input --placeholder "Enter a new value for $key (default: $current_value)")
 
-    # Update the values array with the new value
-    values[$i]="$new_value"
+    # Update the key-value pair only if it's not empty
+    if [ ! -z "$new_value" ]; then
+      keys_edited+=("$key")
+      values_edited+=("$new_value")
+    fi
+  fi
 done
 
-# Print updated key-value pairs
-for ((i=0; i<${#keys[@]}; i++)); do
-    echo "${keys[$i]} - ${values[$i]}"
-done
+# If there are changes, prompt to save these.
+if [ ! ${#keys_edited[@]} -eq 0 ]; then
+  # Show changes ready to be made
+  echo "The following changes will be made:"
+  print_key_pairs keys_edited values_edited
 
-
-# Function to save configurations using jq
-save_configs() {
-    for ((i=0; i<${#keys[@]}; i++)); do
-        key="${keys[$i]}"
-        value="${values[$i]}"
-        jq --arg key "${key:1}" --arg value "$value" '.[$key] = $value' "$config_file" > temp.json && mv temp.json "$config_file"
-    done
-}
-
-gum confirm "Are you sure you want to change the values?" && { save_configs; echo "Changes saved."; } || echo "Changes canceled."
+  # Confirm changes to be made
+  gum confirm "Do you wish to proceed?" \
+    && { modify_config_keys keys_edited values_edited; echo "Changes saved!"; } \
+    || { echo "Changes canceled!"; }
+fi
 
 # Menu
-MENU_CHOICE=$(gum choose  --header "What would you like to do?" "Go back")
-if [ "$MENU_CHOICE" = "Go back" ]; then
-  bash menu/main.sh
+CHOICE_EDIT_MORE="Continue editing config.json"
+CHOICE_BACK="Go back"
+
+MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_EDIT_MORE" "$CHOICE_BACK")
+
+if [ "$MENU_CHOICE" = "$CHOICE_EDIT_MORE" ]; then
+  bash layout/config.sh
+elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
+  bash layout/main.sh
 fi

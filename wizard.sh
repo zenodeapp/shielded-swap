@@ -22,5 +22,8 @@ bash layout/_banner.sh
 # Requirements table and checker
 bash layout/_requirements.sh
 
+# First-time greet
+bash layout/_greeting.sh
+
 # Main menu
 bash layout/main.sh

@@ -60,3 +60,22 @@ shorten_address() {
     echo "$ADDRESS"
   fi
 }
+
+print_array() {
+  local -n ARRAY=$1
+
+  echo "$ARRAY"
+  
+  for ITEM in "${ARRAY[@]}"; do
+    echo "$ITEM"
+  done
+}
+
+print_key_pairs() {
+  local -n KEYS=$1
+  local -n VALUES=$2
+  
+  for ((i=0; i<${#KEYS[@]}; i++)); do
+    echo "${KEYS[$i]} - ${VALUES[$i]}"
+  done
+}
