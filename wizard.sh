@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit the entire script if any command fails
+set -e
+
 # Check if gum is installed, else we can't even run the wizard.
 if ! command -v "gum" >/dev/null 2>&1; then
   echo "Gum is required to run this wizard!"
@@ -7,11 +10,14 @@ if ! command -v "gum" >/dev/null 2>&1; then
   exit 1
 fi
 
+# Root of the current repository
+REPO_ROOT=$(cd "$(dirname "$0")" && pwd)
+
 # Import gum styling
-source _styling.sh
+source $REPO_ROOT/_styling.sh
 
 # Introduction
-gum style	--border rounded \
+gum style	--border rounded --margin "1 2" --padding "2 4" \
 	'# SHIELDED SWAP WIZARD' \
   '' \
   'Scripted by ZEN; utilizing the gum tool by charmbracelet.' \
@@ -20,13 +26,13 @@ gum style	--border rounded \
 
 
 # Check requirements
-bash _requirements.sh
+bash $REPO_ROOT/_requirements.sh
 
-# Menu should appear for a couple of things one could do.
-# - Configuring some default values
-# - Creating an osmosis pool
-# - Doing a shielded swap
+# Extract configurations
+source $REPO_ROOT/_extract_config.sh
 
-# - Checking balances for transparent/shielded address or osmosis address.
-# It should also give a summary for the configured addresses. Perhaps give a dashboard already with the balances.
-# Also create a button that could refresh the balances. Incorporate shielded sync into this with a locking mechanism to prevent corruption?
+# Greeting
+bash $REPO_ROOT/menu/_greeting.sh
+
+# Menu
+bash $REPO_ROOT/menu/first_screen.sh

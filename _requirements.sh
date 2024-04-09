@@ -8,7 +8,7 @@ command_available() {
   fi
 }
 
-gum spin --spinner dot --title "Checking required commands..." -- sleep 1
+gum spin --spinner dot --title "Checking required commands..." -- sleep 0.5
 
 osmosis_available=$(command_available "osmosisd")
 namada_available=$(command_available "namada")
@@ -23,9 +23,8 @@ echo "## Requirements:
 echo ""
 
 if [ $osmosis_available = "YES" ] && [ $namada_available = "YES" ]; then
-  echo ':heavy_check_mark:  Commands are available!' | gum format -t emoji
-  echo ""
-  gum confirm 'Are you ready to start?' && echo "Starting wizard!" || { echo "Wizard aborted."; exit 1; }
+  echo ':heavy_check_mark:  Commands are ready!' | gum format -t emoji
+  gum confirm 'Are you ready to start?' && echo "" || { echo "Wizard aborted."; exit 1; }
 else
   echo ":x: Can't continue, sadly not all required commands are available!" | gum format -t emoji
   echo "   Make sure to install them before continuing."
