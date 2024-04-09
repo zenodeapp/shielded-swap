@@ -4,7 +4,7 @@
 # Adapted to the current repo.
 
 KEYS_FILE="config/_keys.txt"
-CONFIG_FILE="config/config.json"
+CONFIG_FILE="config.json"
 
 # Check if the keys file exists
 if [ ! -f "$KEYS_FILE" ]; then
