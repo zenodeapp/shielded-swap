@@ -3,6 +3,9 @@
 # Exit the entire script if any command fails
 set -e
 
+# Root of the current repository
+REPO_ROOT=$(cd "$(dirname "$0")" && pwd)
+
 # Check if gum is installed, else we can't even run the wizard.
 if ! command -v "gum" >/dev/null 2>&1; then
   echo "Gum is required to run this wizard!"
@@ -10,11 +13,8 @@ if ! command -v "gum" >/dev/null 2>&1; then
   exit 1
 fi
 
-# Root of the current repository
-REPO_ROOT=$(cd "$(dirname "$0")" && pwd)
-
 # Import gum styling
-source $REPO_ROOT/_styling.sh
+source $REPO_ROOT/config/_styling.sh
 
 # Introduction
 gum style	--border rounded --margin "1 2" --padding "2 4" \
@@ -29,7 +29,7 @@ gum style	--border rounded --margin "1 2" --padding "2 4" \
 bash $REPO_ROOT/_requirements.sh
 
 # Extract configurations
-source $REPO_ROOT/_extract_config.sh
+source $REPO_ROOT/config/_extract_config.sh
 
 # Greeting
 bash $REPO_ROOT/menu/_greeting.sh

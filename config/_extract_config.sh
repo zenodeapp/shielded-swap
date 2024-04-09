@@ -2,7 +2,7 @@
 
 # From https://github.com/zenodeapp/namada-proposals/blob/main/dependencies/process_config.sh, adapted to the current repo.
 
-CONFIG_FILE="config.json"
+CONFIG_FILE="config/config.json"
 
 # Check if the configuration file exists
 if [ ! -f "$CONFIG_FILE" ]; then
@@ -50,3 +50,6 @@ export NAM_SHIELDED=$(jq -r '.addresses.namShielded' $CONFIG_FILE)
 export NAM_VIEWING_KEY=$(jq -r '.addresses.namViewingKey' $CONFIG_FILE)
 export OSMO_ADDRESS=$(jq -r '.addresses.osmoAddress' $CONFIG_FILE)
 export SHIELDED_BROKEN=$(jq -r '.shieldedBroken' $CONFIG_FILE)
+
+# Useful
+export NAM_UOSMO_DENOM="transfer/$NAM_CHANNEL/uosmo"
