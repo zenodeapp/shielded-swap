@@ -40,7 +40,7 @@ bash ./wizard.sh
 
 ## Configuration schema
 
-You can make changes to the configurations ([config/config.json](/config/config.json)) using the wizard, but it might be useful to know what it should look like:
+You can make changes to the configurations ([config.json](/config.json)) using the wizard, but it might be useful to know what it should look like:
 
 ### Typing
 ```
@@ -65,7 +65,7 @@ You can make changes to the configurations ([config/config.json](/config/config.
 
 ### Format
 
-See the [config.example.json](/config/config.example.json)-file for an example on what the keys should have as values. Here below follows some extra information for certain key(s):
+See the [_config.example.json](/config/_config.example.json)-file for an example on what the keys should have as values. Here below follows some extra information for certain key(s):
 
 #### shieldedBroken
 
