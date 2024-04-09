@@ -69,7 +69,7 @@ See the [config.example.json](/config/config.example.json)-file for an example o
 
 #### shieldedBroken
 
-`shieldedBroken` should only be set `true` if the Namada chain isn't able to perform a _shielded_ IBC transfer to an external chain (the reject VP issue). What this does is tell the wizard to use the transparent address for the initial transfer of NAAN/OSMO from Namada to Osmosis instead.
+`shieldedBroken` should only be set to `true` if the Namada chain isn't able to perform a _shielded_ IBC transfer to an external chain (the reject VP issue). What this does is tell the wizard to use the _transparent address_ for the initial transfer of NAAN/OSMO from Namada to Osmosis instead.
 
 #### namRpc and osmoRpc
 
