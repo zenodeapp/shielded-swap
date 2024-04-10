@@ -3,6 +3,9 @@
 # Source shared functions
 source helpers/shared.sh
 
+# Source input functions
+source helpers/input.sh
+
 print_balance_block_header() {
   HEADING="$1"
   ADDRESS=${2:-"No address has been configured."}

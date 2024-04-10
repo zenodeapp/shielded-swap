@@ -1,7 +1,13 @@
 #!/bin/bash
 
+# Get latest config
+source config/get.sh
+
 # Source shared functions
 source helpers/shared.sh
+
+# Source input functions
+source helpers/input.sh
 
 # Types of pool warnings
 NO_POOL=$(gum style --padding "1 2" --margin "0" --border double --border-foreground 500 --foreground 500 "No pool id has been configured!")
@@ -36,6 +42,13 @@ else
         "$POOL_ADDRESS"
     fi
     
+    # Convert the ibc address to a more readable variant if it's nam/naan
+    if [ $DENOM1 = "$NAM_IBC" ]; then
+      DENOM1="$NAM_DENOM ($(shorten_address $NAM_IBC))"
+    elif [ $DENOM2 = "$NAM_IBC" ]; then
+      DENOM2="$NAM_DENOM ($(shorten_address $NAM_IBC))"
+    fi
+
     # Denoms block
     BLOCK1=$(gum style --padding "1 2" --margin "0" --border normal --border-foreground 300 --foreground 300 " DENOM1" \ "$AMOUNT1 $DENOM1") 
     BLOCK2=$(gum style --padding "1 2" --margin "0" --border normal --border-foreground 800 --foreground 800 " DENOM2" \ "$AMOUNT2 $DENOM2") 
@@ -50,9 +63,9 @@ fi
 
 # Menu
 CHOICE_CONFIG="1. Point to a different (existing) pool (edit config.json)"
-CHOICE_OWN_POOL="1. Point to an existing pool you own"
-CHOICE_CREATE_POOL="2. Create a new pool"
-CHOICE_BACK="3. Go back"
+CHOICE_OWN_POOL="2. Point to a pool you own"
+CHOICE_CREATE_POOL="3. Create a new pool"
+CHOICE_BACK="Back"
 
 MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_CONFIG" "$CHOICE_OWN_POOL" "$CHOICE_CREATE_POOL" "$CHOICE_BACK")
 

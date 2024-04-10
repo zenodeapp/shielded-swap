@@ -7,7 +7,6 @@ source helpers/shared.sh
 source helpers/input.sh
 
 echo "OSMOSIS POOL CREATION"
-get_gamm_pool_denoms 
 RATIO=$(repeat_input_ratio "What's the uosmo:$NAM_DENOM ratio? (default: 5:1)")
 UOSMO_DEPOSIT=$(repeat_input_number "Enter the amount of uosmo you'll deposit ('1000000' equals 1 OSMO) [default: 1000]")
 NAM_DEPOSIT=$(repeat_input_number "Enter the amount of $NAM_DENOM you'll deposit [default: 200]")
@@ -46,9 +45,9 @@ fi
 
 # Menu
 CHOICE_SEE_POOLS="1. Point to a pool you own"
-CHOICE_BACK="2. Go back"
+CHOICE_BACK="Back"
 
-MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_BACK" "$CHOICE_BACK")
+MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_SEE_POOLS" "$CHOICE_BACK")
 
 if [ "$MENU_CHOICE" = "$CHOICE_SEE_POOLS" ]; then
   bash layout/pool-own.sh

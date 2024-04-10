@@ -3,6 +3,9 @@
 # Source shared functions
 source helpers/shared.sh
 
+# Source input functions
+source helpers/input.sh
+
 # Source config
 source config/get.sh
 

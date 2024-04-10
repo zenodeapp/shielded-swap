@@ -29,19 +29,20 @@ get_osmosis_balances() {
   fi
 }
 
+# Get all the gamm/pool assets owned by the configured osmoAddress
 get_gamm_pool_denoms() {
-  local result
-  result=$(get_osmosis_balances)
+  RESULT=$(get_osmosis_balances)
 
   local -a denoms=()
-  # Use jq to filter denoms that start with 'gamm/pool'
+
   while IFS= read -r line; do
     denoms+=("$line")
-  done < <(echo "$result" | jq -r '.balances[] | select(.denom | startswith("gamm/pool")) | .denom')
+  done < <(echo "$RESULT" | jq -r '.balances[] | select(.denom | startswith("gamm/pool")) | .denom')
 
   echo "${denoms[@]}"
 }
 
+# Create the json file for the creation of an osmosis pool
 create_osmosis_pool_json() {
   DENOM1=$1
   DENOM2=$2
@@ -59,6 +60,7 @@ create_osmosis_pool_json() {
   }" > .tmp/pool.json
 }
 
+# Create an osmosis pool
 create_osmosis_pool() {
   POOL_FILE=$1
   osmosisd tx gamm create-pool --chain-id $OSMO_CHAIN_ID --pool-file $POOL_FILE --node $OSMO_RPC --from $OSMO_KEY --log_format json -y --fees 1500uosmo --gas 500000
@@ -126,38 +128,4 @@ get_namada_shielded_balance() {
   else
     echo "$(namada client balance --chain-id $NAM_CHAIN_ID --owner $NAM_VIEWING_KEY --node $NAM_RPC 2>/dev/null | awk "/^$DENOM_REGEX/{print; exit}")" | awk -F ': ' '{print $2}'
   fi
-}
-
-shorten_address() {
-  ADDRESS="$1"
-  FIRST_LENGTH="${2:-6}"
-  LAST_LENGTH="${3:-6}"
-  MAX_LENGTH="${4:-45}"
-
-  if (( ${#ADDRESS} > MAX_LENGTH )); then
-    FIRST_PART="${ADDRESS:0:FIRST_LENGTH}"
-    LAST_PART="${ADDRESS: -LAST_LENGTH}"
-    echo "$FIRST_PART...$LAST_PART"
-  else
-    echo "$ADDRESS"
-  fi
-}
-
-print_array() {
-  local -n ARRAY=$1
-
-  echo "$ARRAY"
-  
-  for ITEM in "${ARRAY[@]}"; do
-    echo "$ITEM"
-  done
-}
-
-print_key_pairs() {
-  local -n KEYS=$1
-  local -n VALUES=$2
-  
-  for ((i=0; i<${#KEYS[@]}; i++)); do
-    echo "${KEYS[$i]} - ${VALUES[$i]}"
-  done
 }
