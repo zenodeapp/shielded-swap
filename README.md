@@ -25,6 +25,15 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - Written in a modular fashion to promote reusability of code
 - Attempted to add as much error-handling as possible for robuster code (e.g. user input validation, type errors, edge cases)
 
+## Shielded-swap
+
+This is an overall explanation of what happens during a shielded-swap. Details like configuring slippage, balance checking and error-handling have been omitted but can be experienced in the wizard or seen in the code itself (mostly in [layout/shielded.sh](layout/shielded.sh)).
+
+1. Depending on whether `shieldedBroken` is `true` or `false` tokens get send from a **transparent or shielded** Namada address to Osmosis address.
+2. Once this arrives on Osmosis, a swap is performed; either **uosmo => naan or naan => uosmo**.
+3. After this swap succeeds, a memo gets generated in preparation for sending the tokens back to a Namada **shielded** wallet.
+4. The IBC transfer gets executed and the user is given the option to perform a shielded sync and check their balance.
+ 
 ## Quick-start
 
 ### 1. Install jq and bc
