@@ -3,6 +3,11 @@
 # This makes sure the entire script exits if any command fails (useful because of my modular approach to coding)
 set -e
 
+# Remove everything in the temp folder whenever we run this wizard (garbage collection)
+if ! [ -z "$(ls -A .tmp/)" ]; then
+  rm .tmp/*
+fi
+
 # Source shared functions
 source helpers/shared.sh
 

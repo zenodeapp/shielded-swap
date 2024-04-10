@@ -39,10 +39,14 @@ print_balance_block_value "uosmo${NAM_CHANNEL:+ ($NAM_CHANNEL)}" "$(get_namada_s
 echo ""
 
 # Menu
+CHOICE_PERFORM_SS="Perform shielded sync and reload balances"
 CHOICE_BACK="Go back"
 
-MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_BACK")
+MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_PERFORM_SS" "$CHOICE_BACK")
 
-if [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
+if [ "$MENU_CHOICE" = "$CHOICE_PERFORM_SS" ]; then
+  shielded_sync
+  bash layout/balance.sh
+elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
   bash layout/main.sh
 fi

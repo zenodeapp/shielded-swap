@@ -4,15 +4,14 @@
   "osmoChainId": "osmo-test-5",
   "namRpc": "http://127.0.0.1:30657",
   "osmoRpc": "https://osmosis-testnet-rpc.polkachu.com:443",
-  "namTransparent": "tnam1qq22qmw72m3e6c8lajx8jmzzh2h4t3dp7cfs4dxf",
+  "namTransparent": "zen",
   "namShielded": "znam1qqtq5u90nvgq7x0pvfuayykg34td97mjs8p0x333e90rvq5e0lhs43m0gpaxh3pvkqqdpdsjxv83n",
-  "namViewingKey": "zvknam1q0a94dk2qqqqpqxru8k9gsu0fwuvdaax4q9487ycrxpzhnzpfey8206q6s3cm5em5ut2srk8jx2uran67hf9llwmussppkf4xkpm2zch3tr9fa5a83un0trqlte22f00fnkgzep6nv7pchgygrly4y29epca7wuyvs8re4dvz5l2w3vvs7zh73p34ryxr9m646000e7w589t0pdhcdnjmv6qckx2nw4y3873nh0z87mgul9f8yaw3p5mwwxqqyljk8qlzdcncxtlhzq3v90v3",
+  "namViewingKey": "armor",
   "osmoKey": "osmrel",
   "osmoAddress": "osmo1j73g96rdw2vlwvkuu733tcejzyvhkp4nlsdptg",
   "namDenom": "naan",
-  "namAddress": "tnam1qxvg64psvhwumv3mwrrjfcz0h3t3274hwggyzcee",
   "namIbc": "ibc/5872CF7B67F1699BE386B2C577B95C6AC2A268D09FCB345335A875B239EE0174",
   "namChannel": "channel-1235",
   "osmoChannel": "channel-6738",
-  "osmoPoolId": 441
+  "osmoPoolId": 442
 }

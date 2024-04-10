@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Source input functions
+source helpers/input.sh
+
 # Check if a command is installed and readily available for use
 command_available() {
   if command -v "$1" >/dev/null 2>&1; then
@@ -40,10 +43,9 @@ loop_check_balance_osmosis() {
 
   while [ "$(date +%s)" -lt "$(($START_TIME + $TIMEOUT))" ]; do
     BALANCE=$(get_osmosis_balance "$DENOM")
-
     gum spin --title "Checking balance for $DENOM on $OSMO_ADDRESS..." -- sleep 2
 
-    if (( $(bc <<< "$BALANCE >= $START_AMOUNT + $AMOUNT") )); then
+    if (( $(bc <<< "$BALANCE > $START_AMOUNT") )); then
       echo "$BALANCE"
       TIMEOUT_REACHED=false
       break
@@ -157,12 +159,15 @@ estimate_swap_amount() {
   TOKEN_OUT=$(get_counter_token_in_pool "$TOKEN_IN")
 
   if [ -z "$TOKEN_OUT" ]; then
-    echo ""
+    echo "0"
   else
-    TOKEN_AMOUNT_OUT_JSON=$(osmosisd query gamm estimate-swap-exact-amount-in $OSMO_POOL_ID "$TOKEN_OUT" "$TOKEN_AMOUNT_IN$TOKEN_IN" --swap-route-denoms "$TOKEN_OUT" --swap-route-pool-ids $OSMO_POOL_ID --chain-id $OSMO_CHAIN_ID --node $OSMO_RPC --output json)
-    TOKEN_AMOUNT_OUT=$(echo $TOKEN_AMOUNT_OUT_JSON | jq -r '.token_out_amount')
-
-    echo "$TOKEN_AMOUNT_OUT"
+    TOKEN_AMOUNT_OUT_JSON=$(osmosisd query gamm estimate-swap-exact-amount-in $OSMO_POOL_ID "$TOKEN_OUT" "$TOKEN_AMOUNT_IN$TOKEN_IN" --swap-route-denoms "$TOKEN_OUT" --swap-route-pool-ids $OSMO_POOL_ID --chain-id $OSMO_CHAIN_ID --node $OSMO_RPC --output json 2>/dev/null)
+    if [ -z "$TOKEN_AMOUNT_OUT_JSON" ]; then
+      echo "0"
+    else
+      TOKEN_AMOUNT_OUT=$(echo $TOKEN_AMOUNT_OUT_JSON | jq -r '.token_out_amount')
+      echo "$TOKEN_AMOUNT_OUT"
+    fi
   fi
 }
 
@@ -202,7 +207,7 @@ get_namada_transparent_balance() {
   DENOM_REGEX=$(echo "$DENOM" | sed 's/\//\\\//g') # needed to prevent awk from failing over the forward slashes
   
   if [ -z $DENOM ] || [ -z $NAM_TRANSPARENT ] || [ -z $NAM_CHAIN_ID ] || [ -z $NAM_RPC ]; then
-    echo ""
+    echo "0"
   else
     echo "$(namada client balance --chain-id $NAM_CHAIN_ID --owner $NAM_TRANSPARENT --node $NAM_RPC 2>/dev/null | awk "/^$DENOM_REGEX/{print; exit}")" | awk -F ': ' '{print $2}'
   fi
@@ -216,11 +221,21 @@ get_namada_shielded_balance() {
   # This might need some shielded-sync logic
 
   if [ -z $DENOM ] || [ -z $NAM_VIEWING_KEY ] || [ -z $NAM_CHAIN_ID ] || [ -z $NAM_RPC ]; then
-    echo ""
+    echo "0"
   else
     echo "$(namada client balance --chain-id $NAM_CHAIN_ID --owner $NAM_VIEWING_KEY --node $NAM_RPC 2>/dev/null | awk "/^$DENOM_REGEX/{print; exit}")" | awk -F ': ' '{print $2}'
   fi
 }
+
+transfer_ibc_osmosis() {
+  RECEIVER="$1"
+  DENOM="$2"
+  AMOUNT="$3"
+  IBC_MEMO="$4"
+
+  osmosisd tx ibc-transfer transfer transfer "$OSMO_CHANNEL" $RECEIVER "$AMOUNT$DENOM" --memo $IBC_MEMO --from $OSMO_KEY --node $OSMO_RPC --chain-id $OSMO_CHAIN_ID --fees 1000uosmo -y
+}
+
 
 # IBC transfer using namada client (namadac)
 transfer_ibc_namada() {
@@ -285,4 +300,14 @@ gen_ibc_memo() {
   rm $OUTPUT
 
   echo $IBC_MEMO
+}
+
+shielded_sync() {
+  FROM_HEIGHT=$(repeat_input_number "Do you want to start the shielded sync from a specific height? [default: 0; meaning it won't run with --from-height]" "true")
+  
+  if [ -z "$FROM_HEIGHT" ] || [ "$FROM_HEIGHT" = "0" ]; then
+    namada client shielded-sync --node $NAM_RPC
+  else
+    namada client shielded-sync --node $NAM_RPC --from-height "$FROM_HEIGHT"
+  fi
 }

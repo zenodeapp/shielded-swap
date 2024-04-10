@@ -9,7 +9,6 @@ namViewingKey
 osmoKey
 osmoAddress
 namDenom
-namAddress
 namIbc
 namChannel
 osmoChannel
