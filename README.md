@@ -1,42 +1,42 @@
-# Shielded swap (CLI based)
+# Shielded Swap (CLI based)
 
 An attempt to create a shielded-swap CLI variant for SE.
 
 This has been written by ZENODE and is licensed under the MIT-license (see [LICENSE](./LICENSE)).
-
-> [!CAUTION]
-> This is a work in progress!
 
 ## Requirements
 - [gum](https://github.com/charmbracelet/gum)
 - [osmosisd](https://docs.osmosis.zone/osmosis-core/osmosisd)
 - [namada](https://docs.namada.net/introduction/install)
 - [jq](https://jqlang.github.io/jq/download)
+- [bc](https://jqlang.github.io/jq/download)
 
 ## Features
-- Allows for a simple way to create naan-osmosis pools
-- Lists all osmosis pools you own (for quickly switching between created pools)
+- Able to perform shielded-swaps between `naan <=> uosmo` (shielded action)
+- Allows for a simple way to `create naan-uosmo pools`
+- Lists all osmosis pools the user is a part of (for quickly switching between created pools)
+- Shows selected pool information
+- Configuration of the slippage for shielded swaps
+- Swaps are simulated and give an approximate for the min. amount of tokens the user could receive
+- Namada chain ID can be configured (not exclusively tied to SE)
+- Compatible with broken shielded namada-chains (SE); enabling the `shieldedBroken`-key in [config.json](config.json) lets shielded-swaps perform the **first step** of the action flow using the transparent address
+- Simple method to call a shielded-sync before fetching balances
 - Shows balances for osmosis, transparent and shielded addresses
-- Shows pool information
 - Written in a modular fashion to promote reusability of code
-- Attempted to add error-handling for robustness
-- _WIP: swapping of naan to uosmo_
-- _WIP: swapping of uosmo to naan_
-- _WIP: set slippage for swaps and handle approving or rejecting of this._
-- _WIP: Tutorial-like workflows_
-- _WIP: compatibility with both 'broken' shielded namada-chains and 'normal' functioning ones._
-- _WIP: Smart shield-syncing; with a locking mechanism to prevent corruption._
-- _IDEA: Allow swapping of any type of token depending on the selected pool (not just naan-uosmo)._
+- Added error-handling for robustness
 
 ## Quick-start
 
-### 1. Install jq
+### 1. Install jq and bc
+
+> [!NOTE]
+>
+> Likely already installed!
+>
 
 ```
 sudo apt-get install jq
 ```
-
-> For other methods to install jq, see: https://jqlang.github.io/jq/download.
 
 ### 2. Install gum
 
@@ -62,11 +62,22 @@ curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
 bash ./wizard.sh
 ```
 
-## Configuration schema
+## Configuration
 
-You can make changes to the configurations ([config.json](/config.json)) using the wizard, but it might be useful to know what it should look like:
+> [!TIP]
+>
+> **Quick-start**
+>
+> Most of the [config.json](config.json) file is already pre-filled with data one could already make use of. The only values you will have to change are:
+> - `namTransparent`
+> - `namViewingKey`
+> - `namShielded`
+> - `osmoKey`
+> - `osmoAddress`
+>
+> You can make these changes using the wizard, but it might be useful to know what the values should look like. See below for more info or check out the [_config.example.json](/config/_config.example.json)-file for an example.
 
-### Typing
+### Schema
 ```
 {
   "shieldedBroken": boolean,
@@ -74,30 +85,34 @@ You can make changes to the configurations ([config.json](/config.json)) using t
   "osmoChainId": string,
   "namRpc": string,
   "osmoRpc": string,
-  "namTransparent": string,
-  "namShielded": string,
-  "namViewingKey": string,
-  "osmoAddress": string,
+
+  "osmoPoolId": number,
   "namDenom": string,
-  "namAddress": string,
   "namIbc": string,
   "namChannel": string,
   "osmoChannel": string,
-  "osmoPoolId": number
+
+  "namTransparent": alias,
+  "namViewingKey": alias,
+  "namShielded": address,
+
+  "osmoKey": alias,
+  "osmoAddress": string
 }
 ```
-
-### Format
-
-See the [_config.example.json](/config/_config.example.json)-file for an example on what the keys should have as values. Here below follows some extra information for certain key(s):
+> `alias` and `address` are both strings but should explicitly be _aliases_ or _addresses_! 
 
 #### shieldedBroken
 
-`shieldedBroken` should only be set to `true` if the Namada chain isn't able to perform a _shielded_ IBC transfer to an external chain (the reject VP issue). What this does is tell the wizard to use the _transparent address_ for the initial transfer of NAAN/OSMO from Namada to Osmosis instead.
+`shieldedBroken` should only be set to `true` if the Namada chain isn't able to perform a _shielded_ IBC transfer to an external chain (the reject VP issue). What this does is tell the wizard to use the _transparent address_ for the **initial transfer** of NAAN/OSMO from Namada to Osmosis instead.
 
 #### namRpc and osmoRpc
 
 Make sure to also include the port number for `osmoRpc`, else `osmosisd` won't let transactions through. Possibly also the case for `namRpc`.
+
+#### osmoKey and osmoAddress
+
+Make sure to let these two point to the same address.
 
 </br>
 
