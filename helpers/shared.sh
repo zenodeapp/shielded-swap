@@ -185,13 +185,6 @@ swap_exact_amount_in() {
   osmosisd tx gamm swap-exact-amount-in "$TOKEN_AMOUNT_IN$TOKEN_IN" $MIN_AMOUNT --swap-route-pool-ids $OSMO_POOL_ID --swap-route-denoms $TOKEN_OUT --from $OSMO_KEY --chain-id $OSMO_CHAIN_ID --node $OSMO_RPC --fees 1000uosmo --yes
 }
 
-# If I have the time, implement denom traces. This way we could allow swapping any type of token to the other depending on the selected pool
-# get_denom_trace() {
-#   IBC_DENOM="$1"
-
-#   osmosisd query ibc-transfer denom-trace 5872CF7B67F1699BE386B2C577B95C6AC2A268D09FCB345335A875B239EE0174 --node https://osmosis-testnet-rpc.polkachu.com:443 --output json
-# }
-
 # Get namada balance using namada client (namadac)
 get_namada_balance() {
   DENOM="$1"
@@ -258,4 +251,38 @@ transfer_shielded_ibc_namada() {
   AMOUNT="$3"
   
   namada client ibc-transfer --source $NAM_VIEWING_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --gas-payer $NAM_TRANSPARENT
+}
+
+# Get denom of an IBC coin
+get_ibc_denom_trace() {
+  IBC_DENOM="$1"
+
+  # Check if IBC_DENOM starts with "ibc/"
+  if [[ $IBC_DENOM == ibc/* ]]; then
+    IBC_HASH="${IBC_DENOM#ibc/}"
+    DENOM_TRACE=$(osmosisd query ibc-transfer denom-trace "$IBC_HASH" --node $OSMO_RPC --output json)
+    DENOM_TRACE_PATH=$(echo "$DENOM_TRACE" | jq -r '.denom_trace.path')
+    DENOM_TRACE_BASE_DENOM=$(echo "$DENOM_TRACE" | jq -r '.denom_trace.base_denom')
+    echo "$DENOM_TRACE_PATH/$DENOM_TRACE_BASE_DENOM"
+  else # else we simply return without formatting
+    echo "$IBC_DENOM"
+  fi
+}
+
+# Generate an IBC memo for shielded transfers from counter chain to namada
+gen_ibc_memo() {
+  TARGET=$1
+  IBC_DENOM=$2
+  AMOUNT=$3
+
+  # Get IBC denom trace
+  TOKEN=$(get_ibc_denom_trace "$IBC_DENOM")
+
+  OUTPUT=$(namada client ibc-gen-shielded --target "$TARGET" --channel-id "$NAM_CHANNEL" --token "$TOKEN" --amount "$AMOUNT" --output-folder-path ".tmp/" | grep -oP "(?<=to ).*$")
+  IBC_MEMO=$(head -n 1 $OUTPUT)
+
+  # Remove the generated file (garbage collection)
+  rm $OUTPUT
+
+  echo $IBC_MEMO
 }

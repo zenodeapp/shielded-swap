@@ -3,15 +3,6 @@
 # This makes sure the entire script exits if any command fails (useful because of my modular approach to coding)
 set -e
 
-# Function to handle Ctrl+C
-ctrl_c() {
-    echo "Ctrl+C detected. Exiting..."
-    exit 1
-}
-
-# Set up trap for SIGINT (Ctrl+C)
-trap ctrl_c SIGINT
-
 # Source shared functions
 source helpers/shared.sh
 

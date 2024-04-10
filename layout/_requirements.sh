@@ -27,9 +27,9 @@ echo "## Requirements:
 echo ""
 
 # Check if all required commands are available, else abort wizard.
-if [ $osmosis_available = "YES" ] && [ $namada_available = "YES" ] && [ $jq_available = "YES" ]; then
-  echo_success 'Commands are ready!'
-  gum confirm 'Are you ready to start?' && echo "" || { echo "Wizard aborted."; exit 1; }
+if [ $osmosis_available = "YES" ] && [ $namada_available = "YES" ] && [ $jq_available = "YES" ] && [ $bc_available = "YES" ]; then
+  echo_success 'Commands are installed!'
+  echo ""
 else
   echo_fail "Can't continue, sadly not all required commands are available!"
   echo "   Make sure to install them before continuing."

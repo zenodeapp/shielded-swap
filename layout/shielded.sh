@@ -6,7 +6,17 @@ source helpers/shared.sh
 # Source input functions
 source helpers/input.sh
 
-# Menu
+# Variables
+MIN_UOSMO=1000000
+MIN_NAM=10
+
+if [ "$SHIELDED_BROKEN" = 'true' ]; then
+  START_ADDRESS="$NAM_TRANSPARENT"
+else
+  START_ADDRESS="$NAM_VIEWING_KEY"
+fi
+
+### MENU ###
 CHOICE_1="Perform a shielded swap from $NAM_DENOM => uosmo ($NAM_CHANNEL)"
 CHOICE_2="Perform a shielded swap from uosmo ($NAM_CHANNEL) => $NAM_DENOM"
 CHOICE_BACK="Go back"
@@ -25,18 +35,12 @@ elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
   bash layout/main.sh
 fi
 
-# Variables
-MIN_UOSMO=1000000
-MIN_NAM=10
 
-# Set start address
-if [ "$SHIELDED_BROKEN" = 'true' ]; then
-  START_ADDRESS="$NAM_TRANSPARENT"
-else
-  START_ADDRESS="$NAM_VIEWING_KEY"
-fi
 
+### CHECK BALANCES ###
 # Before we can swap we need to make sure that we have enough uosmo on osmosis and enough naan on namada
+header_block "BALANCE CHECK"
+
 # Check osmosis balance
 gum spin --show-output --title "Checking balance on $OSMO_ADDRESS..." sleep 2
 OSMOSIS_BALANCE=$(get_osmosis_balance "uosmo")
@@ -143,7 +147,9 @@ if [ "$(number_is_ge $OSMOSIS_BALANCE $MIN_UOSMO)" = "true" ] && [ "$(number_is_
           echo_success "$AMOUNT_TO_TRANSFER $TOKEN_TO_TRANSFER got swapped for $BALANCE_DIFF $TOKEN_TO_RECEIVE on osmosis!"
           
           # generate IBC and send back to shielded address
-
+          # echo "Generating IBC memo..."
+# IBC_MEMO=$(gen_ibc_memo "$shielded_namada_address" "uosmo" "$AMOUNT_RECEIVED") # call with naan if we do it the other way around
+# echo "Generated: $IBC_MEMO"
           # shielded sync after a minute or two or give user option to keep chevking their sddrrds
 
           # Show balance

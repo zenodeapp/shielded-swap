@@ -4,4 +4,5 @@ source helpers/shared.sh
 # Source input functions
 source helpers/input.sh
 
-echo $(estimate_swap_amount "$NAM_IBC" "10")
+echo $(get_ibc_denom_trace "$NAM_IBC")
+echo $(gen_ibc_memo "$NAM_SHIELDED" "$NAM_IBC" "100")

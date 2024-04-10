@@ -6,6 +6,7 @@ source helpers/shared.sh
 # Source input functions
 source helpers/input.sh
 
+# Functions
 print_balance_block_header() {
   HEADING="$1"
   ADDRESS=${2:-"No address has been configured."}
@@ -23,6 +24,7 @@ print_balance_block_value() {
   gum style --foreground $COLOR "> $TITLE: $BALANCE"
 }
 
+# Blocks
 print_balance_block_header "OSMOSIS" "$OSMO_ADDRESS" 810
 print_balance_block_value "uosmo" "$(get_osmosis_balance uosmo)" 810
 print_balance_block_value "naan" "$(get_osmosis_balance $NAM_IBC)" 810

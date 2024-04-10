@@ -140,14 +140,24 @@ number_is_ge() {
   fi
 }
 
+# Success echo
 echo_success() {
   MESSAGE=$1
   
   echo ":heavy_check_mark:  $MESSAGE" | gum format -t emoji
 }
 
+# Fail echo
 echo_fail() {
   MESSAGE=$1
   
   echo ":x: $MESSAGE" | gum format -t emoji
+}
+
+# Reusable block with double border and padding
+header_block() {
+  HEADING="$1"
+  COLOR=${3:-1500}
+
+  gum style --padding "1 2" --margin "0" --border double --border-foreground $COLOR --foreground $COLOR "$HEADING"
 }
