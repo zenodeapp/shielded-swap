@@ -12,18 +12,18 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - [bc](https://www.gnu.org/software/bc/manual/html_mono/bc.html)
 
 ## Features
-- Able to perform shielded-swaps between `naan <=> uosmo` (shielded action)
-- Allows for a simple way to `create naan-uosmo pools`
+- Able to perform shielded-swaps between _naan <=> uosmo_ (shielded action)
+- Allows for a simple way to _create naan-uosmo pools_
 - Lists all osmosis pools the user is a part of (for quickly switching between created pools)
 - Shows selected pool information
-- Configuration of the slippage for shielded swaps
+- Configuration of the _slippage_ for shielded swaps
 - Swaps are simulated and give an approximate for the min. amount of tokens the user could receive
 - Namada chain ID can be configured (not exclusively tied to SE)
 - Compatible with broken shielded namada-chains (SE); enabling the `shieldedBroken`-key in [config.json](config.json) lets shielded-swaps perform the **first step** of the action flow using the transparent address
 - Simple method to call a shielded-sync before fetching balances
 - Shows balances for osmosis, transparent and shielded addresses
 - Written in a modular fashion to promote reusability of code
-- Added error-handling for robustness
+- Attempted to add as much error-handling as possible for robuster code (e.g. user input validation, type errors, edge cases)
 
 ## Quick-start
 
