@@ -10,20 +10,20 @@ NO_VALID_POOL=$(gum style --padding "1 2" --margin "0" --border double --border-
 if [ -z $OSMO_POOL_ID ]; then
   echo "$NO_POOL"
 else
-  POOL_INFO=$(get_osmosis_pool_info $OSMO_POOL_ID)
+  POOL_INFO=$(get_osmosis_pool_json $OSMO_POOL_ID)
   if [ -z $POOL_INFO ]; then
     echo "$NO_VALID_POOL"
   else
     # Pool info
-    DENOM0=$(get_osmosis_pool_info_key "$POOL_INFO" "denom0")
-    DENOM1=$(get_osmosis_pool_info_key "$POOL_INFO" "denom1")
-    AMOUNT1=$(get_osmosis_pool_info_key "$POOL_INFO" "amount1")
-    DENOM2=$(get_osmosis_pool_info_key "$POOL_INFO" "denom2")
-    AMOUNT2=$(get_osmosis_pool_info_key "$POOL_INFO" "amount2")
-    POOL_ID=$(get_osmosis_pool_info_key "$POOL_INFO" "id")
-    POOL_ADDRESS=$(get_osmosis_pool_info_key "$POOL_INFO" "address")
-    SWAP_FEE=$(get_osmosis_pool_info_key "$POOL_INFO" "swap_fee")
-    EXIT_FEE=$(get_osmosis_pool_info_key "$POOL_INFO" "exit_fee")
+    DENOM0=$(get_osmosis_pool_info "$POOL_INFO" "denom0")
+    DENOM1=$(get_osmosis_pool_info "$POOL_INFO" "denom1")
+    AMOUNT1=$(get_osmosis_pool_info "$POOL_INFO" "amount1")
+    DENOM2=$(get_osmosis_pool_info "$POOL_INFO" "denom2")
+    AMOUNT2=$(get_osmosis_pool_info "$POOL_INFO" "amount2")
+    POOL_ID=$(get_osmosis_pool_info "$POOL_INFO" "id")
+    POOL_ADDRESS=$(get_osmosis_pool_info "$POOL_INFO" "address")
+    SWAP_FEE=$(get_osmosis_pool_info "$POOL_INFO" "swap_fee")
+    EXIT_FEE=$(get_osmosis_pool_info "$POOL_INFO" "exit_fee")
     
     # Pool block
     # If the denominators in the pool don't match the information in the config.json file, a warning is given.
@@ -50,13 +50,16 @@ fi
 
 # Menu
 CHOICE_CONFIG="1. Point to a different (existing) pool (edit config.json)"
+CHOICE_OWN_POOL="1. Point to an existing pool you own"
 CHOICE_CREATE_POOL="2. Create a new pool"
 CHOICE_BACK="3. Go back"
 
-MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_CONFIG" "$CHOICE_CREATE_POOL" "$CHOICE_BACK")
+MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_CONFIG" "$CHOICE_OWN_POOL" "$CHOICE_CREATE_POOL" "$CHOICE_BACK")
 
 if [ "$MENU_CHOICE" = "$CHOICE_CONFIG" ]; then
   bash layout/config.sh
+elif [ "$MENU_CHOICE" = "$CHOICE_OWN_POOL" ]; then
+  bash layout/pool-own.sh
 elif [ "$MENU_CHOICE" = "$CHOICE_CREATE_POOL" ]; then
   bash layout/pool-create.sh
 elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then

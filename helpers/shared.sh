@@ -20,7 +20,52 @@ get_osmosis_balance() {
   fi
 }
 
-get_osmosis_pool_info() {
+# Get osmosis balances using osmosisd
+get_osmosis_balances() {
+  if [ -z $OSMO_ADDRESS ] || [ -z $OSMO_CHAIN_ID ] || [ -z $OSMO_RPC ]; then
+    echo ""
+  else
+    echo "$(osmosisd query bank balances $OSMO_ADDRESS --chain-id $OSMO_CHAIN_ID --node $OSMO_RPC --output json)"
+  fi
+}
+
+get_gamm_pool_denoms() {
+  local result
+  result=$(get_osmosis_balances)
+
+  local -a denoms=()
+  # Use jq to filter denoms that start with 'gamm/pool'
+  while IFS= read -r line; do
+    denoms+=("$line")
+  done < <(echo "$result" | jq -r '.balances[] | select(.denom | startswith("gamm/pool")) | .denom')
+
+  echo "${denoms[@]}"
+}
+
+create_osmosis_pool_json() {
+  DENOM1=$1
+  DENOM2=$2
+  DENOM1_WEIGHT=$3
+  DENOM2_WEIGHT=$4
+  DENOM1_AMOUNT=$5
+  DENOM2_AMOUNT=$6
+
+  echo "{
+    \"weights\": \"$DENOM1_WEIGHT$DENOM1,$DENOM2_WEIGHT$DENOM2\",
+    \"initial-deposit\": \"$DENOM1_AMOUNT$DENOM1,$DENOM2_AMOUNT$DENOM2\",
+    \"swap-fee\": \"0.01\",
+    \"exit-fee\": \"0.00\",
+    \"future-governor\": \"168h\"
+  }" > .tmp/pool.json
+}
+
+create_osmosis_pool() {
+  POOL_FILE=$1
+  osmosisd tx gamm create-pool --chain-id $OSMO_CHAIN_ID --pool-file $POOL_FILE --node $OSMO_RPC --from $OSMO_KEY --log_format json -y --fees 1500uosmo --gas 500000
+}
+
+# Get osmosis pool info as json
+get_osmosis_pool_json() {
   POOL_ID=$1
 
   POOL_INFO="$(osmosisd query gamm pool $POOL_ID --chain-id $OSMO_CHAIN_ID --node $OSMO_RPC --output json 2>/dev/null)"
@@ -28,7 +73,9 @@ get_osmosis_pool_info() {
   echo $POOL_INFO
 }
 
-get_osmosis_pool_info_key() {
+# Use this function in combination with get_osmosis_pool_json.
+# This returns the value for a specific key.
+get_osmosis_pool_info() {
   POOL_INFO=$1
   KEY=$2
 
