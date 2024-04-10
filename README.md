@@ -66,8 +66,6 @@ bash ./wizard.sh
 
 > [!TIP]
 >
-> **Quick-start**
->
 > Most of the [config.json](config.json) file is already pre-filled with data one could already make use of. The only values you will have to change are:
 > - `namTransparent`
 > - `namViewingKey`
