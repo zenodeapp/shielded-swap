@@ -22,6 +22,7 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - Attempted to add error-handling for robustness
 - _WIP: swapping of naan to uosmo_
 - _WIP: swapping of uosmo to naan_
+- _WIP: set slippage for swaps and handle approving or rejecting of this._
 - _WIP: Tutorial-like workflows_
 - _WIP: compatibility with both 'broken' shielded namada-chains and 'normal' functioning ones._
 - _WIP: Smart shield-syncing; with a locking mechanism to prevent corruption._
