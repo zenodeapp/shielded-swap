@@ -7,9 +7,10 @@ source helpers/shared.sh
 source helpers/input.sh
 
 echo "OSMOSIS POOL CREATION"
+gum log --level warn --structured "IMPORTANT: make sure to fund the pool with sufficient tokens, else the swaps will cost more than you receive causing shielded actions to fail."
 RATIO=$(repeat_input_ratio "What's the uosmo:$NAM_DENOM ratio? (default: 5:1)")
-UOSMO_DEPOSIT=$(repeat_input_number "Enter the amount of uosmo you'll deposit ('1000000' equals 1 OSMO) [default: 1000]")
-NAM_DEPOSIT=$(repeat_input_number "Enter the amount of $NAM_DENOM you'll deposit [default: 200]")
+UOSMO_DEPOSIT=$(repeat_input_number "Enter the amount of uosmo you'll deposit ('1000000' equals 1 OSMO) [default: 100000000]")
+NAM_DEPOSIT=$(repeat_input_number "Enter the amount of $NAM_DENOM you'll deposit [default: 20]")
 
 # Set defaults
 if [ -z "$RATIO" ]; then
@@ -17,11 +18,11 @@ if [ -z "$RATIO" ]; then
 fi
 
 if [ -z "$UOSMO_DEPOSIT" ]; then
-  UOSMO_DEPOSIT=1000
+  UOSMO_DEPOSIT=100000000
 fi
 
 if [ -z "$NAM_DEPOSIT" ]; then
-  NAM_DEPOSIT=200
+  NAM_DEPOSIT=20
 fi
 
 # Extract numbers from ratio

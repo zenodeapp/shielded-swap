@@ -77,49 +77,85 @@ if [ "$(number_is_ge $OSMOSIS_BALANCE $MIN_UOSMO)" = "true" ] && [ "$(number_is_
   # if balance available higher than 0
   if [ $(bc <<< "$BALANCE_AVAILABLE > 0") -eq 1 ]; then
     AMOUNT_TO_TRANSFER=$(repeat_input_number_max "How much $TOKEN_TO_TRANSFER would you like to swap for $TOKEN_TO_RECEIVE? [max: $BALANCE_AVAILABLE]" "$BALANCE_AVAILABLE" "false")
+    SLIPPAGE=$(repeat_input_number_max "What should the slippage be set to? [default: 2%; max: 49%]" "49")
+    
+    # Defaults to 2% if no value is set
+    if [ -z "$SLIPPAGE" ]; then
+      SLIPPAGE=2
+    fi
 
-    # Check balance on osmosis side
-    if $SENDING_NAM; then
+    # Simulate a swap and tell how much the user will receive
+    ESTIMATE_AMOUNT=$(estimate_swap_amount "$NAM_IBC" "$AMOUNT_TO_TRANSFER")
+    ESTIMATE_AMOUNT_MIN=$(calculate_slippage_amount "$ESTIMATE_AMOUNT" "$SLIPPAGE")
+    
+    gum log --structured --level info "In: $AMOUNT_TO_TRANSFER $TOKEN_TO_TRANSFER (slippage set to $SLIPPAGE%)"
+    gum log --structured --level info "Out: approx. $ESTIMATE_AMOUNT_MIN ~ $ESTIMATE_AMOUNT $TOKEN_TO_RECEIVE."
+    CONFIRM_SWAP=$(gum confirm "You will receive a minimum of $ESTIMATE_AMOUNT_MIN $TOKEN_TO_RECEIVE, do you want to continue?" && echo "true" || echo "false")
+
+    if [ "$CONFIRM_SWAP" = "true" ]; then
       gum spin --title "Checking balance for $NAM_IBC on $OSMO_ADDRESS..." sleep 2
-      BALANCE_TARGET=$(get_osmosis_balance "$NAM_IBC")
-      gum log --structured --level info "Found $BALANCE_TARGET $NAM_IBC."
+
+      # Check balance on osmosis side
+      if $SENDING_NAM; then
+        gum spin --title "Checking balance for $NAM_IBC on $OSMO_ADDRESS..." sleep 2
+        BALANCE_TARGET=$(get_osmosis_balance "$NAM_IBC")
+        BALANCE_TARGET_COUNTER="$OSMOSIS_BALANCE"
+        gum log --structured --level info "Found $BALANCE_TARGET $NAM_IBC."
+      else
+        BALANCE_TARGET="$OSMOSIS_BALANCE"
+        BALANCE_TARGET_COUNTER=$(get_osmosis_balance "$NAM_IBC")
+        gum log --structured --level info "Found $BALANCE_TARGET uosmo."
+      fi
+
+      # Send the tokens from namada to osmosis
+      gum spin --show-output --title "Transferring $AMOUNT_TO_TRANSFER $TOKEN_TO_TRANSFER over IBC to $OSMO_ADDRESS..." sleep 2
+      transfer_ibc_namada "$OSMO_ADDRESS" "$TOKEN_TO_TRANSFER" "$AMOUNT_TO_TRANSFER"
+
+      # Check if token got transferred
+      if $SENDING_NAM; then
+        BALANCE_RECEIVER=$(loop_check_balance_osmosis "$NAM_IBC" "$BALANCE_TARGET" "$AMOUNT_TO_TRANSFER")
+      else
+        BALANCE_RECEIVER=$(loop_check_balance_osmosis "uosmo" "$BALANCE_TARGET" "$AMOUNT_TO_TRANSFER")
+      fi
+
+      if [ -z "$BALANCE_RECEIVER" ]; then
+        echo_fail "Transaction timed out...no $TOKEN_TO_TRANSFER was received on $(shorten_address $OSMO_ADDRESS 6 6 38)."
+        bash layout/main.sh
+      else
+        echo_success "$AMOUNT_TO_TRANSFER $TOKEN_TO_TRANSFER received. Balance on $(shorten_address $START_ADDRESS 6 6 38) is now $BALANCE_RECEIVER $TOKEN_TO_TRANSFER!"
+        
+        # Swap the tokens on the osmosis chain
+        gum spin --show-output --title "Swapping $AMOUNT_TO_TRANSFER $TOKEN_TO_TRANSFER for $ESTIMATE_AMOUNT_MIN ~ $ESTIMATE_AMOUNT $TOKEN_TO_RECEIVE..." sleep 2
+        swap_exact_amount_in "$NAM_IBC" "$AMOUNT_TO_TRANSFER" "$ESTIMATE_AMOUNT_MIN"
+
+        # Check that you got the tokens and see how many
+        if $SENDING_NAM; then
+          BALANCE_RECEIVER=$(loop_check_balance_osmosis "uosmo" "$BALANCE_TARGET_COUNTER" "$AMOUNT_TO_TRANSFER")
+        else
+          BALANCE_RECEIVER=$(loop_check_balance_osmosis "$NAM_IBC" "$BALANCE_TARGET_COUNTER" "$AMOUNT_TO_TRANSFER")
+        fi
+
+        if [ -z "$BALANCE_RECEIVER" ]; then
+          echo_fail "Transaction timed out...no $TOKEN_TO_TRANSFER got swapped on $(shorten_address $OSMO_ADDRESS 6 6 38)."
+          bash layout/main.sh
+        else
+          BALANCE_DIFF=$(bc <<< "$BALANCE_RECEIVER - $BALANCE_TARGET_COUNTER")
+          echo_success "$AMOUNT_TO_TRANSFER $TOKEN_TO_TRANSFER got swapped for $BALANCE_DIFF $TOKEN_TO_RECEIVE on osmosis!"
+          
+          # generate IBC and send back to shielded address
+
+          # shielded sync after a minute or two or give user option to keep chevking their sddrrds
+
+          # Show balance
+        fi
+      fi
     else
-      BALANCE_TARGET="$OSMOSIS_BALANCE"
-      gum log --structured --level info "Found $BALANCE_TARGET uosmo."
-    fi
-
-    # Send the tokens from namada to osmosis
-    gum spin --show-output --title "Transferring $AMOUNT_TO_TRANSFER $TOKEN_TO_TRANSFER over IBC to $OSMO_ADDRESS..." sleep 2
-    transfer_ibc_namada "$OSMO_ADDRESS" "$TOKEN_TO_TRANSFER" "$AMOUNT_TO_TRANSFER"
-
-    # Check if token got transferred
-    if $SENDING_NAM; then
-      BALANCE_RECEIVED=$(loop_check_balance_osmosis "$NAM_IBC" "$BALANCE_TARGET" "$AMOUNT_TO_TRANSFER")
-    else
-      BALANCE_RECEIVED=$(loop_check_balance_osmosis "uosmo" "$BALANCE_TARGET" "$AMOUNT_TO_TRANSFER")
-    fi
-
-    if [ -z "$BALANCE_RECEIVED" ]; then
-      echo_fail "Transaction timed out...no $TOKEN_TO_TRANSFER was received on $(shorten_address $OSMO_ADDRESS 6 6 38)."
+      echo_fail "Swap got canceled."
       bash layout/main.sh
-    else
-      BALANCE_TARGET=$BALANCE_RECEIVED
-      echo_success "$AMOUNT_TO_TRANSFER $TOKEN_TO_TRANSFER received. Balance on $(shorten_address $START_ADDRESS 6 6 38) is now $BALANCE_TARGET $TOKEN_TO_TRANSFER!"
-      
-      # perform the swap
-
-      # check that you got the token and how much
-
-      # generate IBC and send back to shielded address
-
-      # shielded sync after a minute or two or give user option to keep chevking their sddrrds
-
-      # Show balance
-
     fi
   else
-      echo_fail "You can't continue doing a shielded swap for not having enough $TOKEN_TO_TRANSFER on $(shorten_address $START_ADDRESS 6 6 38)!"
-      bash layout/main.sh
+    echo_fail "You can't continue doing a shielded swap for not having enough $TOKEN_TO_TRANSFER on $(shorten_address $START_ADDRESS 6 6 38)!"
+    bash layout/main.sh
   fi
 else
   echo_fail "You can't continue doing a shielded swap for not having enough balance!"

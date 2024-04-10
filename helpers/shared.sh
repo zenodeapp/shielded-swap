@@ -130,6 +130,68 @@ get_osmosis_pool_info() {
   fi
 }
 
+get_counter_token_in_pool() {
+  TOKEN_IN="$1"
+
+  # Get pool id data
+  POOL_ID_DATA=$(get_osmosis_pool_json $OSMO_POOL_ID)
+
+  DENOM1=$(get_osmosis_pool_info "$POOL_ID_DATA" "denom1")
+  DENOM2=$(get_osmosis_pool_info "$POOL_ID_DATA" "denom2")
+
+  if [ "$DENOM1" = "$TOKEN_IN" ]; then
+    echo "$DENOM2"
+  elif [ "$DENOM2" = "$TOKEN_IN" ]; then
+    echo "$DENOM1"
+  else
+    echo ""
+  fi
+}
+
+# Calculates how many tokens you will receive if you do this transaction.
+estimate_swap_amount() {
+  TOKEN_IN="$1"
+  TOKEN_AMOUNT_IN="$2"
+
+  # Get token out based on token in using the pool id
+  TOKEN_OUT=$(get_counter_token_in_pool "$TOKEN_IN")
+
+  if [ -z "$TOKEN_OUT" ]; then
+    echo ""
+  else
+    TOKEN_AMOUNT_OUT_JSON=$(osmosisd query gamm estimate-swap-exact-amount-in $OSMO_POOL_ID "$TOKEN_OUT" "$TOKEN_AMOUNT_IN$TOKEN_IN" --swap-route-denoms "$TOKEN_OUT" --swap-route-pool-ids $OSMO_POOL_ID --chain-id $OSMO_CHAIN_ID --node $OSMO_RPC --output json)
+    TOKEN_AMOUNT_OUT=$(echo $TOKEN_AMOUNT_OUT_JSON | jq -r '.token_out_amount')
+
+    echo "$TOKEN_AMOUNT_OUT"
+  fi
+}
+
+# Returns the amount while taking slippage in account 
+calculate_slippage_amount() {
+  AMOUNT="$1"
+  SLIPPAGE="$2"
+
+  echo $(bc <<< "scale=0; $AMOUNT * (100 - $SLIPPAGE) / 100")
+}
+
+swap_exact_amount_in() {
+  TOKEN_IN="$1"
+  TOKEN_AMOUNT_IN="$2"
+  MIN_AMOUNT="$3"
+
+  # Get token out based on token in using the pool id
+  TOKEN_OUT=$(get_counter_token_in_pool "$TOKEN_IN")
+
+  osmosisd tx gamm swap-exact-amount-in "$TOKEN_AMOUNT_IN$TOKEN_IN" $MIN_AMOUNT --swap-route-pool-ids $OSMO_POOL_ID --swap-route-denoms $TOKEN_OUT --from $OSMO_KEY --chain-id $OSMO_CHAIN_ID --node $OSMO_RPC --fees 1000uosmo --yes
+}
+
+# If I have the time, implement denom traces. This way we could allow swapping any type of token to the other depending on the selected pool
+# get_denom_trace() {
+#   IBC_DENOM="$1"
+
+#   osmosisd query ibc-transfer denom-trace 5872CF7B67F1699BE386B2C577B95C6AC2A268D09FCB345335A875B239EE0174 --node https://osmosis-testnet-rpc.polkachu.com:443 --output json
+# }
+
 # Get namada balance using namada client (namadac)
 get_namada_balance() {
   DENOM="$1"
