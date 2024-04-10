@@ -24,15 +24,6 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - Shows balances for osmosis, transparent and shielded addresses
 - Written in a modular fashion to promote reusability of code
 - Attempted to add as much error-handling as possible for robuster code (e.g. user input validation, type errors, edge cases)
-
-## Shielded-swap
-
-This is an overall explanation of what happens during a shielded-swap. Details like configuring slippage, balance checking and error-handling have been omitted but can be experienced in the wizard or seen in the code itself (mostly in [layout/shielded.sh](layout/shielded.sh)).
-
-1. Depending on whether `shieldedBroken` is `true` or `false` tokens get send from a **transparent or shielded** Namada address to Osmosis address.
-2. Once this arrives on Osmosis, a swap is performed; either **uosmo => naan or naan => uosmo**.
-3. After this swap succeeds, a memo gets generated in preparation for sending the tokens back to a Namada **shielded** wallet.
-4. The IBC transfer gets executed and the user is given the option to perform a shielded sync and check their balance.
  
 ## Quick-start
 
@@ -121,12 +112,31 @@ Make sure to also include the port number for `osmoRpc`, else `osmosisd` won't l
 
 Make sure to let these two point to the same address.
 
+## Appendix
+
 ### Leveraging channels/pools
 
 I already created the following channels and pools that can be used:
 - ibc `channel-1235 <=> channel-6738`
 - ibc/denom `ibc/5872CF7B67F1699BE386B2C577B95C6AC2A268D09FCB345335A875B239EE0174`
 - pool(s) `439`, `440`, `441` and `442`
+
+### Shielded-sync
+
+> [!CAUTION]
+>
+> If you have an automated script running for keeping your shielded-sync up-to-date, then do not perform any shielded-sync's inside of the wizard itself! There's a chance of corrupting your cached data when multiple shielded-sync runs are executed at the same time!
+>
+> The wizard makes sure to always ask for your consent when it wants to run this command.
+
+### Shielded action
+
+This is an overall explanation of what happens during a shielded-swap. Details like configuring slippage, balance checking and error-handling have been omitted but can be experienced in the wizard or seen in the code itself (mostly in [layout/shielded.sh](layout/shielded.sh)).
+
+1. Depending on whether `shieldedBroken` is `true` or `false` tokens get send from a **transparent** or **shielded** Namada address to Osmosis address.
+2. Once this arrives on Osmosis, a swap is performed; either **uosmo => naan or naan => uosmo**.
+3. After this swap succeeds, a memo gets generated in preparation for sending the tokens back to a Namada **shielded** wallet.
+4. The IBC transfer gets executed and the user is given the option to perform a shielded sync and check their balance.
 
 ### Ideas that didn't make the cut (due to time constraints)
 
