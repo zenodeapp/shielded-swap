@@ -9,7 +9,7 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - [osmosisd](https://docs.osmosis.zone/osmosis-core/osmosisd)
 - [namada](https://docs.namada.net/introduction/install)
 - [jq](https://jqlang.github.io/jq/download)
-- [bc](https://jqlang.github.io/jq/download)
+- [bc](https://www.gnu.org/software/bc/manual/html_mono/bc.html)
 
 ## Features
 - Able to perform shielded-swaps between `naan <=> uosmo` (shielded action)
