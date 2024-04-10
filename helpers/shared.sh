@@ -29,6 +29,32 @@ get_osmosis_balances() {
   fi
 }
 
+# This checks every 2 seconds whether the balance for a specified denom changed, it times out after 2 minutes.
+loop_check_balance_osmosis() {
+  DENOM="$1"
+  START_AMOUNT="$2"
+  AMOUNT_TO_ADD="$3"
+  START_TIME=$(date +%s)
+  TIMEOUT=120 # Check for max of 2 minutes
+  TIMEOUT_REACHED=true
+
+  while [ "$(date +%s)" -lt "$(($START_TIME + $TIMEOUT))" ]; do
+    BALANCE=$(get_osmosis_balance "$DENOM")
+
+    gum spin --title "Checking balance for $DENOM on $OSMO_ADDRESS..." -- sleep 2
+
+    if (( $(bc <<< "$BALANCE >= $START_AMOUNT + $AMOUNT") )); then
+      echo "$BALANCE"
+      TIMEOUT_REACHED=false
+      break
+    fi
+  done
+
+  if $TIMEOUT_REACHED; then
+    echo ""
+  fi
+}
+
 # Get all the gamm/pool assets owned by the configured osmoAddress
 get_gamm_pool_denoms() {
   RESULT=$(get_osmosis_balances)
@@ -106,6 +132,17 @@ get_osmosis_pool_info() {
 
 # Get namada balance using namada client (namadac)
 get_namada_balance() {
+  DENOM="$1"
+
+  if [ "$SHIELDED_BROKEN" = 'true' ]; then
+    get_namada_transparent_balance "$DENOM"
+  else
+    get_namada_shielded_balance "$DENOM"
+  fi
+}
+
+# Get namada transparent balance using namada client (namadac)
+get_namada_transparent_balance() {
   DENOM=$1
   DENOM_REGEX=$(echo "$DENOM" | sed 's/\//\\\//g') # needed to prevent awk from failing over the forward slashes
   
@@ -128,4 +165,35 @@ get_namada_shielded_balance() {
   else
     echo "$(namada client balance --chain-id $NAM_CHAIN_ID --owner $NAM_VIEWING_KEY --node $NAM_RPC 2>/dev/null | awk "/^$DENOM_REGEX/{print; exit}")" | awk -F ': ' '{print $2}'
   fi
+}
+
+# IBC transfer using namada client (namadac)
+transfer_ibc_namada() {
+  RECEIVER="$1"
+  TOKEN="$2"
+  AMOUNT="$3"
+  
+  if [ "$SHIELDED_BROKEN" = 'true' ]; then
+    transfer_transparent_ibc_namada $RECEIVER $TOKEN $AMOUNT
+  else
+    transfer_shielded_ibc_namada $RECEIVER $TOKEN $AMOUNT
+  fi
+}
+
+# IBC transfer using namada client (namadac)
+transfer_transparent_ibc_namada() {
+  RECEIVER="$1"
+  TOKEN="$2"
+  AMOUNT="$3"
+  
+  namada client ibc-transfer --source $NAM_TRANSPARENT --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC
+}
+
+# IBC shielded transfer using namada client (namadac)
+transfer_shielded_ibc_namada() {
+  RECEIVER="$1"
+  TOKEN="$2"
+  AMOUNT="$3"
+  
+  namada client ibc-transfer --source $NAM_VIEWING_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --gas-payer $NAM_TRANSPARENT
 }

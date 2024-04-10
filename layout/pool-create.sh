@@ -28,19 +28,19 @@ fi
 IFS=':' read -r WEIGHT1 WEIGHT2 <<< "$RATIO"
 
 # Generate the pool.json file
-gum spin --spinner dot --title "Generating pool.json file..." -- sleep 1
+gum spin --title "Generating pool.json file..." -- sleep 1
 if create_osmosis_pool_json "uosmo" "$NAM_IBC" "$WEIGHT1" "$WEIGHT2" "$UOSMO_DEPOSIT" "$NAM_DEPOSIT"; then
-  echo "pool.json generated!"
+  echo_success 'pool.json generated!'
 
   # Create pool
-  echo ""
+  gum spin --show-output --title "Creating osmosis pool transaction..." -- sleep 1
   if create_osmosis_pool ".tmp/pool.json"; then
-    echo "Osmosis pool created!"
+    echo_success 'Osmosis pool created!'
   else
-    echo "Failed to create osmosis pool!"
+    echo_fail "Failed to create osmosis pool!"
   fi
 else
-  echo "Failed to generate pool.json!"
+  echo_fail "Failed to generate pool.json!"
 fi
 
 # Menu
