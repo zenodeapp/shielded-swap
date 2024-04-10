@@ -35,7 +35,7 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 >
 
 ```
-sudo apt-get install jq
+sudo apt-get install jq bc
 ```
 
 ### 2. Install gum
@@ -113,6 +113,19 @@ Make sure to also include the port number for `osmoRpc`, else `osmosisd` won't l
 #### osmoKey and osmoAddress
 
 Make sure to let these two point to the same address.
+
+### Leveraging channels/pools
+
+I already created the following channels and pools that can be used:
+- ibc `channel-1235 <=> channel-6738`
+- ibc/denom `ibc/5872CF7B67F1699BE386B2C577B95C6AC2A268D09FCB345335A875B239EE0174`
+- pool(s) `439`, `440`, `441` and `442`
+
+### Ideas that didn't make the cut (due to time constraints)
+
+- Swapping of any type of token, not just naan <=> uosmo pairs would have been possible if I refactored the code further. The wizard depends mostly on which pool is selected, thus treating this as the indicator to which two tokens the user wanted to swap would have been feasible!
+- Implementing more tutorial-like workflows for changing the [config](config.json)-file would have made it easier to get started.
+- The [config](config.json)-file is currently quite bloated. Some values could have been fetched and stored into an auto-generated static-config.json file (e.g. like deriving `osmoAddress` from the `osmoKey`).
 
 </br>
 
