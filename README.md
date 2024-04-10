@@ -25,6 +25,7 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - _WIP: Tutorial-like workflows_
 - _WIP: compatibility with both 'broken' shielded namada-chains and 'normal' functioning ones._
 - _WIP: Smart shield-syncing; with a locking mechanism to prevent corruption._
+- _IDEA: Allow swapping of any type of token depending on the selected pool (not just naan-uosmo)._
 
 ## Quick-start
 
