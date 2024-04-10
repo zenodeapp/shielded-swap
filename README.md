@@ -13,6 +13,19 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - [namada](https://docs.namada.net/introduction/install)
 - [jq](https://jqlang.github.io/jq/download)
 
+## Features
+- Allows for a simple way to create naan-osmosis pools
+- Lists all osmosis pools you own (for quickly switching between created pools)
+- Shows balances for osmosis, transparent and shielded addresses
+- Shows pool information
+- Written in a modular fashion to promote reusability of code
+- Attempted to add error-handling for robustness
+- _WIP: swapping of naan to uosmo_
+- _WIP: swapping of uosmo to naan_
+- _WIP: Tutorial-like workflows_
+- _WIP: compatibility with both 'broken' shielded namada-chains and 'normal' functioning ones._
+- _WIP: Smart shield-syncing; with a locking mechanism to prevent corruption._
+
 ## Quick-start
 
 ### 1. Install jq
