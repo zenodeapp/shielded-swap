@@ -124,12 +124,15 @@ Make sure to let these two point to the same address.
 
 ## Appendix
 
-### Leveraging channels/pools
+### Channels/pools
 
 I already created the following channels and pools that can be used:
 - ibc `channel-1321 <=> channel-6903`
 - ibc/denom `ibc/F6EE42E1CC8154EFDC3329174F4A519DCB6C62BAC914DC55B1E624C0BD07880F`
 - pool(s) `445` and `447`
+
+> [!NOTE]
+> I created pools that usually contained 1000000000 uosmo (1000 OSMO) and 200 naan with a ratio of 5:1. This seemed to work somewhat well for me! If you need any OSMO for testing, just ask!
 
 ### Shielded-sync
 
