@@ -9,10 +9,6 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 >
 > This is a partially-working web-based Shielded IBC application (Transparent transfers work + shielded OSMO/THETA to Namada).
 
-> [!NOTE]
-> **Concerning pools:** I already created channels and pools usable for testing on SE! if you need to create a pool, see more details [below](#channelspools)!
->
-
 ## Requirements
 - [gum](https://github.com/charmbracelet/gum)
 - [osmosisd](https://docs.osmosis.zone/osmosis-core/osmosisd)
@@ -21,21 +17,22 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - [bc](https://www.gnu.org/software/bc/manual/html_mono/bc.html)
 
 ## Features
+
 - Able to perform shielded-swaps between _naan <=> uosmo_ (shielded actions)
+- Configure _slippage_ for shielded swaps
+- Swaps are simulated and give an approximate for the min. amount of tokens the user could receive
 - Able to shield and unshield assets (shielded actions)
 - Smart shielded-syncing; indicates whenever a shielded-sync should be performed
 - Allows for a simple way to _create naan-uosmo pools_
 - Lists all osmosis pools the user is a part of (for quickly switching between created pools)
 - Shows selected pool information
-- Configuration of _slippage_ for shielded swaps
-- Swaps are simulated and give an approximate for the min. amount of tokens the user could receive
 - Namada chain ID can be configured (not exclusively tied to SE)
-- Compatible with broken shielded namada-chains (SE); enabling the `shieldedBroken`-key in [config.json](config.json) lets shielded-swaps perform the **first step** of the [Flow of action](#flow-of-action) using the _transparent address_ instead of a _shielded address_.
-- Creating transparent, shielded (viewing key + payment combined) and osmosis keys all in one place
-- Configuring the config.json file from within the wizard, plus validity checker.
+- Compatible with broken shielded namada-chains (SE) by enabling the `shieldedBroken`-key in [config.json](config.json). See more about this in section [shieldedBroken](#shieldedbroken) or [Flow of action](#flow-of-action).
+- Creating transparent, shielded (viewing key + payment combined) and osmosis keys made easy
+- Configure the config.json file from within the wizard (plus auto-validity checker)
 - Balance checker for osmosis, transparent and shielded addresses
 - Written in a modular fashion to promote reusability of code
-- Attempted to add as much error-handling and validity checks as possible for robustness (e.g. user input validation, type errors, edge case prevention)
+- Attempted to add as much error-handling and validity checks as possible for robustness (e.g. user input validation, type errors, etc.)
  
 ## Quick-start
 
@@ -117,7 +114,7 @@ bash wizard.sh
 
 #### shieldedBroken
 
-`shieldedBroken` should only be set to `true` if the Namada chain isn't able to perform a _shielded_ IBC transfer to an external chain (the reject VP issue). What this does is tell the wizard to use the _transparent address_ for the **initial transfer** of NAAN/OSMO from Namada to Osmosis instead.
+`shieldedBroken` should only be set to `true` if the Namada chain isn't able to perform a _shielded_ IBC transfer to an external chain (the reject VP issue). What this does is tell the wizard to instead use the _transparent address_ for the **initial transfer** of NAAN/OSMO from Namada to Osmosis.
 
 #### namRpc and osmoRpc
 
@@ -135,7 +132,7 @@ Make sure to let these two point to the same address.
 I already created the following channels and pools that can be used:
 - ibc `channel-1321 <=> channel-6903`
 - ibc/denom `ibc/F6EE42E1CC8154EFDC3329174F4A519DCB6C62BAC914DC55B1E624C0BD07880F`
-- pool(s) `445` and `447`
+- pool(s) `445` or `447`
 
 #### New
 
