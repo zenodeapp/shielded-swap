@@ -5,7 +5,9 @@ A CLI BASED SHIELDED SWAP application for SE.
 This has been written by ZENODE and is licensed under the MIT-license (see [LICENSE](./LICENSE)).
 
 > [!NOTE]
-> A partially-working web-based Shielded IBC application can be found at https://zenode.app/explorer/namada/ibc (Shielded OSMO/THETA to Namada works).
+> If you need to send funds over from Osmosis to Namada or vice versa, head over to https://zenode.app/explorer/namada/ibc.
+>
+> This is a partially-working web-based Shielded IBC application (Transparent transfers work + shielded OSMO/THETA to Namada).
 
 ## Requirements
 - [gum](https://github.com/charmbracelet/gum)
