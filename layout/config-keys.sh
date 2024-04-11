@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: this could be refactored; abstracting same logic into functions.
+
 # Source input functions
 source helpers/input.sh
 
@@ -12,8 +14,6 @@ CHOICE_SHIELDED_KEYS="3. Create new (shielded) namada keys (viewing key and paym
 CHOICE_BACK="Back"
 
 MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_OSMOSIS_KEY" "$CHOICE_TRANSPARENT_KEY" "$CHOICE_SHIELDED_KEYS" "$CHOICE_BACK")
-
-# TODO: this could be refactored; abstracting same logic into functions.
 
 if [ "$MENU_CHOICE" = "$CHOICE_OSMOSIS_KEY" ]; then
   CONFIG_KEY="osmoKey"

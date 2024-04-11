@@ -119,6 +119,25 @@ repeat_input_ratio() {
   echo "$INPUT"
 }
 
+# This keeps asking for a non-empty string
+repeat_input() {
+  PROMPT="$1"
+  INPUT=""
+  
+  while true; do
+    INPUT=$(gum input --placeholder "$PROMPT")
+    
+    if [ -z "$INPUT" ]; then
+      gum log --structured --level error "Invalid input! Value cannot be empty."
+      continue
+    fi
+
+    break
+  done
+
+  echo "$INPUT"
+}
+
 # Function to check if a number is greater or equal to the given minimum value
 number_is_ge() {
   NUMBER=$1
@@ -148,7 +167,7 @@ echo_fail() {
 # Reusable block with double border and padding
 header_block() {
   HEADING="$1"
-  COLOR=${3:-1500}
+  COLOR=${2:-1500}
 
   gum style --padding "1 2" --margin "0" --border double --border-foreground $COLOR --foreground $COLOR "$HEADING"
 }

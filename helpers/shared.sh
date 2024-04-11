@@ -43,7 +43,7 @@ loop_check_balance_osmosis() {
 
   while [ "$(date +%s)" -lt "$(($START_TIME + $TIMEOUT))" ]; do
     BALANCE=$(get_osmosis_balance "$DENOM")
-    gum spin --title "Checking balance for $DENOM on $OSMO_ADDRESS..." -- sleep 2
+    gum spin --spinner.foreground="800" --title "Checking balance for $DENOM on $OSMO_ADDRESS..." -- sleep 2
 
     if (( $(bc <<< "$BALANCE > $START_AMOUNT") )); then
       echo "$BALANCE"
