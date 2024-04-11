@@ -17,19 +17,20 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - [bc](https://www.gnu.org/software/bc/manual/html_mono/bc.html)
 
 ## Features
-- Able to perform shielded-swaps between _naan <=> uosmo_ (shielded action)
+- Able to perform shielded-swaps between _naan <=> uosmo_ (shielded actions)
+- Able to shield and unshield assets (shielded actions)
+- Smart shielded-syncing; indicates whenever a shielded-sync should be performed
 - Allows for a simple way to _create naan-uosmo pools_
 - Lists all osmosis pools the user is a part of (for quickly switching between created pools)
 - Shows selected pool information
-- Configuration of the _slippage_ for shielded swaps
+- Configuration of _slippage_ for shielded swaps
 - Swaps are simulated and give an approximate for the min. amount of tokens the user could receive
 - Namada chain ID can be configured (not exclusively tied to SE)
-- Compatible with broken shielded namada-chains (SE); enabling the `shieldedBroken`-key in [config.json](config.json) lets shielded-swaps perform the **first step** of the action flow using the transparent address
-- Smart shielded-sync; the places where a shielded-sync may need to be performed are indicated
+- Compatible with broken shielded namada-chains (SE); enabling the `shieldedBroken`-key in [config.json](config.json) lets shielded-swaps perform the **first step** of the action-flow using the _transparent address_ instead of a _shielded address_.
 - Creating transparent, shielded (viewing key + payment combined) and osmosis keys all in one place
-- Shows balances for osmosis, transparent and shielded addresses
+- Balance checker for osmosis, transparent and shielded addresses
 - Written in a modular fashion to promote reusability of code
-- Attempted to add as much error-handling as possible for robuster code (e.g. user input validation, type errors, edge cases)
+- Attempted to add as much error-handling and validity checks as possible for robuster code (e.g. user input validation, type errors, edge case prevention)
  
 ## Quick-start
 
