@@ -42,7 +42,7 @@ elif [ "$MENU_CHOICE" = "$CHOICE_TRANSPARENT_KEY" ]; then
     ALIAS="$DEFAULT_ALIAS"
   fi
 
-  namada wallet gen --alias "$ALIAS" --chain-id "$CHAIN_ID"
+  namada wallet gen --alias "$ALIAS" --chain-id "$NAM_CHAIN_ID"
   modify_config_key "$CONFIG_KEY" "$ALIAS"
 
   echo ""
@@ -57,7 +57,7 @@ elif [ "$MENU_CHOICE" = "$CHOICE_SHIELDED_KEYS" ]; then
     ALIAS="$DEFAULT_ALIAS"
   fi
 
-  namada wallet gen --alias "$ALIAS" --chain-id "$CHAIN_ID" --shielded
+  namada wallet gen --alias "$ALIAS" --chain-id "$NAM_CHAIN_ID" --shielded
   modify_config_key "$CONFIG_KEY" "$ALIAS"
 
   echo ""
@@ -73,7 +73,7 @@ elif [ "$MENU_CHOICE" = "$CHOICE_SHIELDED_KEYS" ]; then
     ALIAS="$DEFAULT_ALIAS"
   fi
 
-  namada wallet gen-payment-addr --alias "$ALIAS" --chain-id "$CHAIN_ID" --key "$VIEWING_KEY"
+  namada wallet gen-payment-addr --alias "$ALIAS" --chain-id "$NAM_CHAIN_ID" --key "$VIEWING_KEY"
   
   # TODO: Resets for now; find a way to extract the address and set this as well.
   modify_config_key "$CONFIG_KEY" ""
