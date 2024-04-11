@@ -20,6 +20,6 @@ elif [ "$MENU_CHOICE" = "$CHOICE_OSMO_POOL" ]; then
   bash layout/pool.sh
 elif [ "$MENU_CHOICE" = "$CHOICE_CONFIG" ]; then
   bash layout/config.sh
-elif [ "$MENU_CHOICE" = "$CHOICE_EXIT" ]; then
+else
   exit 1
 fi

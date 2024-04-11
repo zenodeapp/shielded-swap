@@ -70,11 +70,11 @@ CHOICE_BACK="Back"
 MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_CONFIG" "$CHOICE_OWN_POOL" "$CHOICE_CREATE_POOL" "$CHOICE_BACK")
 
 if [ "$MENU_CHOICE" = "$CHOICE_CONFIG" ]; then
-  bash layout/config.sh
+  bash layout/config-manual.sh
 elif [ "$MENU_CHOICE" = "$CHOICE_OWN_POOL" ]; then
   bash layout/pool-own.sh
 elif [ "$MENU_CHOICE" = "$CHOICE_CREATE_POOL" ]; then
   bash layout/pool-create.sh
-elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
+else
   bash layout/main.sh
 fi

@@ -47,6 +47,6 @@ MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_PERFORM
 if [ "$MENU_CHOICE" = "$CHOICE_PERFORM_SS" ]; then
   shielded_sync
   bash layout/balance.sh
-elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
+else
   bash layout/main.sh
 fi

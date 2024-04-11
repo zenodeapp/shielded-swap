@@ -26,9 +26,9 @@ else
 fi
 
 # Menu
-CHOICE_1="Perform a shielded swap from $DENOM1_NAMADA => $DENOM2_OSMOSIS ($NAM_CHANNEL)"
-CHOICE_2="Perform a shielded swap from $DENOM2_OSMOSIS ($NAM_CHANNEL) => $DENOM1_NAMADA"
-CHOICE_BACK="Go back"
+CHOICE_1="1. Perform a shielded swap from $DENOM1_NAMADA => $DENOM2_OSMOSIS ($NAM_CHANNEL)"
+CHOICE_2="2. Perform a shielded swap from $DENOM2_OSMOSIS ($NAM_CHANNEL) => $DENOM1_NAMADA"
+CHOICE_BACK="Back"
 
 MENU_CHOICE=$(gum choose  --header "What type of shielded action would you like to perform?" "$CHOICE_1" "$CHOICE_2" "$CHOICE_BACK")
 
@@ -41,7 +41,7 @@ elif [ "$MENU_CHOICE" = "$CHOICE_2" ]; then
   DENOM1_OSMOSIS="uosmo"
   DENOM2_NAMADA="$NAM_DENOM"
   DENOM2_OSMOSIS="$NAM_IBC"
-elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
+else
   bash layout/main.sh
   exit 0
 fi
@@ -181,8 +181,8 @@ if [ "$OSMOSIS_UOSMO_BALANCE_VALID" = "true" ] && [ "$NAMADA_NAM_BALANCE_VALID" 
           echo_success "$AMOUNT_TO_TRANSFER $DENOM1_NAMADA got swapped for $BALANCE_DIFF $DENOM2_NAMADA!"
           gum log --structured --level info "Give it a minute or two and make sure to perform a shielded sync before checking your balance."
 
-          CHOICE_1="Perform a shielded-sync and check balance(s) (warning: do not do this if you scripted shielded-sync to auto-run!)"
-          CHOICE_2="Check balance(s)"
+          CHOICE_1="1. Perform a shielded-sync and check balance(s) (warning: do not do this if you scripted shielded-sync to auto-run!)"
+          CHOICE_2="2. Check balance(s)"
           CHOICE_BACK="Back to main menu"
 
           MENU_CHOICE=$(gum choose  --header "What's next?" "$CHOICE_1" "$CHOICE_2" "$CHOICE_BACK")
@@ -193,7 +193,7 @@ if [ "$OSMOSIS_UOSMO_BALANCE_VALID" = "true" ] && [ "$NAMADA_NAM_BALANCE_VALID" 
             bash layout/balance.sh
           elif [ "$MENU_CHOICE" = "$CHOICE_2" ]; then
             bash layout/balance.sh
-          elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
+          else
             bash layout/main.sh
           fi
         fi

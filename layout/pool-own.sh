@@ -26,9 +26,6 @@ else
   # Menu
   CHOICE_BACK="Back to pools"
 
-  MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_BACK")
-
-  if [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
-    bash layout/pool.sh
-  fi
+  MENU_CHOICE=$(gum choose  --header "All set!" "$CHOICE_BACK")
+  bash layout/pool.sh
 fi

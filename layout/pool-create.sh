@@ -56,7 +56,7 @@ if [ "$CONFIRM_CREATE" = "true" ]; then
 
   if [ "$MENU_CHOICE" = "$CHOICE_SEE_POOLS" ]; then
     bash layout/pool-own.sh
-  elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
+  else
     bash layout/pool.sh
   fi
 else
