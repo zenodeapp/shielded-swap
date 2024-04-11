@@ -127,9 +127,9 @@ Make sure to let these two point to the same address.
 ### Leveraging channels/pools
 
 I already created the following channels and pools that can be used:
-- ibc `channel-1235 <=> channel-6738`
-- ibc/denom `ibc/5872CF7B67F1699BE386B2C577B95C6AC2A268D09FCB345335A875B239EE0174`
-- pool(s) `439`, `440`, `441` and `442`
+- ibc `channel-1321 <=> channel-6903`
+- ibc/denom `ibc/F6EE42E1CC8154EFDC3329174F4A519DCB6C62BAC914DC55B1E624C0BD07880F`
+- pool(s) `445` and `447`
 
 ### Shielded-sync
 
