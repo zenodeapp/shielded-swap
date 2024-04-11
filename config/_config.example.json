@@ -6,15 +6,16 @@
   "namRpc": "http://127.0.0.1:26657",
   "osmoRpc": "https://osmosis-testnet-rpc.polkachu.com:443",
   
-  "osmoPoolId": 441,
+  "osmoPoolId": 447,
   "namDenom": "naan",
-  "namIbc": "ibc/5872CF7B67F1699BE386B2C577B95C6AC2A268D09FCB345335A875B239EE0174",
-  "namChannel": "channel-1235",
-  "osmoChannel": "channel-6738",
+  "namIbc": "ibc/F6EE42E1CC8154EFDC3329174F4A519DCB6C62BAC914DC55B1E624C0BD07880F",
+  "namChannel": "channel-1321",
+  "osmoChannel": "channel-6903",
 
   "namTransparent": "zen",
   "namViewingKey": "shielded",
   "namPayment": "znam1qqtq5u90nvgq7x0pvfuayykg34td97mjs8p0x333e90rvq5e0lhs43m0gpaxh3pvkqqdpdsjxv83n",
+  "namMemo": "tpknam1qz36mzdvdmxvvcpv3c36zzs5v369jauws0tzrxesuaexy0p25r5sy0jsuac",
 
   "osmoKey": "osmokey",
   "osmoAddress": "osmo1j73g96rdw2vlwvkuu733tcejzyvhkp4nlsdptg"
