@@ -179,9 +179,16 @@ if [ "$OSMOSIS_UOSMO_BALANCE_VALID" = "true" ] && [ "$NAMADA_NAM_BALANCE_VALID" 
 
           # End of swap
           echo_success "$AMOUNT_TO_TRANSFER $DENOM1_NAMADA got swapped for $BALANCE_DIFF $DENOM2_NAMADA!"
+          
+          echo ""
+          # Give info about next steps
           gum log --structured --level info "Give it a minute or two and make sure to perform a shielded sync before checking your balance."
-
-          CHOICE_1="1. Perform a shielded-sync and check balance(s) (warning: do not do this if you scripted shielded-sync to auto-run!)"
+          
+          # Give warning for usage of shielded sync
+          gum log --structured --level warn "Do not perform a shielded-sync if you scripted this to auto-run periodically!"
+          echo ""
+          
+          CHOICE_1="1. Perform a shielded-sync and check balance(s)"
           CHOICE_2="2. Check balance(s)"
           CHOICE_BACK="Back to main menu"
 

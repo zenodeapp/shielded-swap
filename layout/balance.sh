@@ -38,9 +38,13 @@ print_balance_block_value "naan" "$(get_namada_shielded_balance "$NAM_DENOM")" 7
 print_balance_block_value "uosmo${NAM_CHANNEL:+ ($NAM_CHANNEL)}" "$(get_namada_shielded_balance "$NAM_UOSMO_DENOM")" 795
 echo ""
 
+# Give warning for usage of shielded sync
+gum log --structured --level warn "Do not perform a shielded-sync if you scripted this to auto-run periodically!"
+echo ""
+
 # Menu
 CHOICE_PERFORM_SS="Perform shielded sync and reload balances"
-CHOICE_BACK="Go back"
+CHOICE_BACK="Back"
 
 MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_PERFORM_SS" "$CHOICE_BACK")
 
@@ -48,5 +52,6 @@ if [ "$MENU_CHOICE" = "$CHOICE_PERFORM_SS" ]; then
   shielded_sync
   bash layout/balance.sh
 else
+  exit 3
   bash layout/main.sh
 fi
