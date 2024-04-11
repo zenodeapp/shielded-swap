@@ -52,6 +52,5 @@ if [ "$MENU_CHOICE" = "$CHOICE_PERFORM_SS" ]; then
   shielded_sync
   bash layout/balance.sh
 else
-  exit 3
   bash layout/main.sh
 fi
