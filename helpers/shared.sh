@@ -218,8 +218,6 @@ get_namada_shielded_balance() {
   DENOM=$1
   DENOM_REGEX=$(echo "$DENOM" | sed 's/\//\\\//g') # needed to prevent awk from failing over the forward slashes
 
-  # This might need some shielded-sync logic
-
   if [ -z $DENOM ] || [ -z $NAM_VIEWING_KEY ] || [ -z $NAM_CHAIN_ID ] || [ -z $NAM_RPC ]; then
     echo "0"
   else
@@ -265,7 +263,7 @@ transfer_shielded_ibc_namada() {
   TOKEN="$2"
   AMOUNT="$3"
   
-  namada client ibc-transfer --source $NAM_VIEWING_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --gas-payer $NAM_TRANSPARENT
+  namada client ibc-transfer --source $NAM_VIEWING_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_TRANSPARENT
 }
 
 # Get denom of an IBC coin
@@ -275,7 +273,7 @@ get_ibc_denom_trace() {
   # Check if IBC_DENOM starts with "ibc/"
   if [[ $IBC_DENOM == ibc/* ]]; then
     IBC_HASH="${IBC_DENOM#ibc/}"
-    DENOM_TRACE=$(osmosisd query ibc-transfer denom-trace "$IBC_HASH" --node $OSMO_RPC --output json)
+    DENOM_TRACE=$(osmosisd query ibc-transfer denom-trace "$IBC_HASH" --node "$OSMO_RPC" --chain-id "$OSMO_CHAIN_ID" --output json)
     DENOM_TRACE_PATH=$(echo "$DENOM_TRACE" | jq -r '.denom_trace.path')
     DENOM_TRACE_BASE_DENOM=$(echo "$DENOM_TRACE" | jq -r '.denom_trace.base_denom')
     echo "$DENOM_TRACE_PATH/$DENOM_TRACE_BASE_DENOM"
@@ -293,7 +291,7 @@ gen_ibc_memo() {
   # Get IBC denom trace
   TOKEN=$(get_ibc_denom_trace "$IBC_DENOM")
 
-  OUTPUT=$(namada client ibc-gen-shielded --target "$TARGET" --channel-id "$NAM_CHANNEL" --token "$TOKEN" --amount "$AMOUNT" --output-folder-path ".tmp/" | grep -oP "(?<=to ).*$")
+  OUTPUT=$(namada client ibc-gen-shielded --chain-id "$NAM_CHAIN_ID" --node "$NAM_RPC" --target "$TARGET" --channel-id "$NAM_CHANNEL" --token "$TOKEN" --amount "$AMOUNT" --output-folder-path ".tmp/" | grep -oP "(?<=to ).*$")
   IBC_MEMO=$(head -n 1 $OUTPUT)
 
   # Remove the generated file (garbage collection)
@@ -306,8 +304,8 @@ shielded_sync() {
   FROM_HEIGHT=$(repeat_input_number "Do you want to start the shielded sync from a specific height? [default: 0; meaning it won't run with --from-height]" "true")
   
   if [ -z "$FROM_HEIGHT" ] || [ "$FROM_HEIGHT" = "0" ]; then
-    namada client shielded-sync --node $NAM_RPC
+    namada client shielded-sync --chain-id "$NAM_CHAIN_ID" --node "$NAM_RPC"
   else
-    namada client shielded-sync --node $NAM_RPC --from-height "$FROM_HEIGHT"
+    namada client shielded-sync --chain-id "$NAM_CHAIN_ID" --node "$NAM_RPC" --from-height "$FROM_HEIGHT"
   fi
 }

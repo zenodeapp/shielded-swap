@@ -22,13 +22,13 @@ else
   # Change this value in the json file
   modify_config_key "osmoPoolId" "$POOL_ID"
   echo "Set osmoPoolId to: $POOL_ID!"
-fi
 
-# Menu
-CHOICE_BACK="Back to pools"
+  # Menu
+  CHOICE_BACK="Back to pools"
 
-MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_BACK")
+  MENU_CHOICE=$(gum choose  --header "What would you like to do?" "$CHOICE_BACK")
 
-if [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
-  bash layout/pool.sh
+  if [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
+    bash layout/pool.sh
+  fi
 fi

@@ -1,14 +1,5 @@
 #!/bin/bash
 
-# Function to handle Ctrl+C
-ctrl_c() {
-    echo "Ctrl+C detected. Exiting..."
-    exit 1
-}
-
-# Set up trap for SIGINT (Ctrl+C)
-trap ctrl_c SIGINT
-
 # Shorten an address, eth-style
 shorten_address() {
   ADDRESS="$1"
