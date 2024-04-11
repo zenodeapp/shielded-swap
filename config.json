@@ -2,16 +2,16 @@
   "shieldedBroken": true,
   "namChainId": "shielded-expedition.88f17d1d14",
   "osmoChainId": "osmo-test-5",
-  "namRpc": "http://127.0.0.1:30657",
+  "namRpc": "http://127.0.0.1:26657",
   "osmoRpc": "https://osmosis-testnet-rpc.polkachu.com:443",
-  "namTransparent": "zen",
-  "namShielded": "znam1qqtq5u90nvgq7x0pvfuayykg34td97mjs8p0x333e90rvq5e0lhs43m0gpaxh3pvkqqdpdsjxv83n",
-  "namViewingKey": "armor",
-  "osmoKey": "osmrel",
-  "osmoAddress": "osmo1j73g96rdw2vlwvkuu733tcejzyvhkp4nlsdptg",
+  "osmoPoolId": 441,
   "namDenom": "naan",
   "namIbc": "ibc/5872CF7B67F1699BE386B2C577B95C6AC2A268D09FCB345335A875B239EE0174",
   "namChannel": "channel-1235",
   "osmoChannel": "channel-6738",
-  "osmoPoolId": 442
+  "namTransparent": "",
+  "namViewingKey": "",
+  "namShielded": "",
+  "osmoKey": "",
+  "osmoAddress": ""
 }

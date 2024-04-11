@@ -6,8 +6,10 @@ source helpers/shared.sh
 # Source input functions
 source helpers/input.sh
 
-# Variables
+# Check if all values are provided
+source config/validate_values.sh
 
+# Variables
 # DENOM1 is always nam/naan, DENOM2 is uosmo. 
 # NOTE: For now this is the only pair possible, but could be refactored into allowing all sorts of pairs.
 # Will do this if I have enough time at hand.
@@ -41,6 +43,16 @@ elif [ "$MENU_CHOICE" = "$CHOICE_2" ]; then
   DENOM2_OSMOSIS="$NAM_IBC"
 elif [ "$MENU_CHOICE" = "$CHOICE_BACK" ]; then
   bash layout/main.sh
+  exit 0
+fi
+
+# Perform a shielded sync 
+if ! [ "$SHIELDED_BROKEN" = 'true' ]; then
+  CONFIRM_SS=$(gum confirm "Do you want to perform a shielded sync before swapping?" && echo "true" || echo "false")
+
+  if [ "$CONFIRM_SS" = "true" ]; then
+    shielded_sync
+  fi
 fi
 
 ### CHECK BALANCES ###
@@ -63,13 +75,13 @@ check_balance() {
 }
 
 # Check uosmo balance on osmosis
-gum spin --show-output --title "Checking balance on $(shorten_address $OSMO_ADDRESS)..." sleep 2
+gum spin --show-output --title "Checking balance on $(shorten_address "$OSMO_ADDRESS")..." sleep 2
 MIN_UOSMO=1000000
 OSMOSIS_UOSMO_BALANCE=$(get_osmosis_balance "uosmo")
 OSMOSIS_UOSMO_BALANCE_VALID=$(check_balance "uosmo" "$OSMOSIS_UOSMO_BALANCE" "$MIN_UOSMO")
 
 # Check naan/nam balance on namada
-gum spin --show-output --title "Checking balance on $(shorten_address $NAM_ADDRESS 19 19)..." sleep 2
+gum spin --show-output --title "Checking balance on $(shorten_address "$NAM_ADDRESS" 19 19)..." sleep 2
 MIN_NAM=10
 NAMADA_NAM_BALANCE=$(get_namada_balance "$NAM_DENOM")
 NAMADA_NAM_BALANCE_VALID=$(check_balance "$NAM_DENOM" "$NAMADA_NAM_BALANCE" "$MIN_NAM")
@@ -83,7 +95,7 @@ if $SENDING_NAM; then # No need to recalculate balance here since it's naan
 else
   # We have to calculate the minimum needed for a successful swap
   MIN_DENOM2=$(estimate_swap_amount "$DENOM2_OSMOSIS" "2")
-  gum spin --show-output --title "Checking balance of "$DENOM1_NAMADA" on $(shorten_address $NAM_ADDRESS 19 19)..." sleep 2
+  gum spin --show-output --title "Checking balance of "$DENOM1_NAMADA" on $(shorten_address "$NAM_ADDRESS" 19 19)..." sleep 2
   BALANCE_AVAILABLE=$(get_namada_balance "$DENOM1_NAMADA")
   BALANCE_AVAILABLE_VALID=$(check_balance "$DENOM1_NAMADA" "$BALANCE_AVAILABLE" "$MIN_DENOM2")
 fi
@@ -111,7 +123,7 @@ if [ "$OSMOSIS_UOSMO_BALANCE_VALID" = "true" ] && [ "$NAMADA_NAM_BALANCE_VALID" 
   
   if ! { [ "$ESTIMATE_AMOUNT" = "0" ] || [ "$ESTIMATE_AMOUNT_MIN" = "0" ]; }; then
     # Swap preview blocks
-    BLOCK1=$(gum style --padding "1 2" --margin "0" --border normal --border-foreground 300 --foreground 300 " GIVE" \ "$AMOUNT_TO_TRANSFER" \ "$DENOM1_NAMADA") 
+    BLOCK1=$(gum style --padding "1 2" --margin "0" --border normal --border-foreground 300 --foreground 300 " SEND" \ "$AMOUNT_TO_TRANSFER" \ "$DENOM1_NAMADA") 
     BLOCK2=$(gum style --padding "1 2" --margin "0" --border normal --border-foreground 800 --foreground 800 " RECEIVE" \ "$ESTIMATE_AMOUNT_MIN ~ $ESTIMATE_AMOUNT" \ "$DENOM2_NAMADA") 
     gum join "$BLOCK1" "$BLOCK2"
 

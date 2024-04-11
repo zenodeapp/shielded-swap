@@ -33,7 +33,7 @@ print_balance_block_header "NAMADA (TRANSPARENT)" "$NAM_TRANSPARENT" 1500
 print_balance_block_value "naan" "$(get_namada_transparent_balance "$NAM_DENOM")" 1500
 print_balance_block_value "uosmo${NAM_CHANNEL:+ ($NAM_CHANNEL)}" "$(get_namada_transparent_balance "$NAM_UOSMO_DENOM")" 1500
 echo ""
-print_balance_block_header "NAMADA (SHIELDED)" "$(shorten_address $NAM_VIEWING_KEY 21 21)" 795
+print_balance_block_header "NAMADA (SHIELDED)" "$(shorten_address "$NAM_VIEWING_KEY" 21 21)" 795
 print_balance_block_value "naan" "$(get_namada_shielded_balance "$NAM_DENOM")" 795
 print_balance_block_value "uosmo${NAM_CHANNEL:+ ($NAM_CHANNEL)}" "$(get_namada_shielded_balance "$NAM_UOSMO_DENOM")" 795
 echo ""

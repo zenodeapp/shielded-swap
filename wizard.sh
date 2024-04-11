@@ -30,5 +30,9 @@ bash layout/_requirements.sh
 # First-time greet
 bash layout/_greeting.sh
 
+# Validate config values
+source config/validate_values.sh
+check_config_values
+
 # Main menu
 bash layout/main.sh
