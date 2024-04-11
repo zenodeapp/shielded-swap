@@ -160,7 +160,7 @@ This is an overall explanation of what happens during a shielded-swap. Details l
 3. After this swap succeeds, a memo gets generated in preparation for sending the tokens back to a Namada **shielded** wallet.
 4. The IBC transfer gets executed and the user is given the option to perform a shielded sync and check their updated balance.
 
-### Ideas that didn't make the cut (due to time constraints)
+### Ideas
 
 - Swapping of any type of token, not just naan <=> uosmo pairs would have been possible if I refactored the code further. The wizard depends mostly on which pool is selected, thus treating this as the indicator to which two tokens the user wanted to swap would have been feasible!
 - Implementing more tutorial-like workflows for changing the [config](config.json)-file would have made it easier to get started.
