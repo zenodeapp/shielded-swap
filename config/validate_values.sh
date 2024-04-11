@@ -18,7 +18,13 @@ check_config_values() {
   done < "$KEYS_FILE"
 
   if $ERR_TRIGGERED; then
-    gum log --structured --level warn "Not all required keys are configured, make sure to do this using 4. Configuration!"
+    # This means a field is empty, so give an error.
+    gum log --structured --level error "Not all required keys are configured, make sure to do this using 4. Configuration!"
+    NAM_RPC_VALUE=$(jq -r '.namRpc' "$CONFIG_FILE")
+    # Common mistake is to not set the rpc to the correct value, so give a warning if it's on the default!
+    if [ "$NAM_RPC_VALUE" = "http://127.0.0.1:26657" ]; then
+      gum log --structured --level warn "Namada RPC is set to the default: http://127.0.0.1:26657, if this is correct ignore this warning."
+    fi
     echo ""
   fi
 }
