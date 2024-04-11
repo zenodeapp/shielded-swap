@@ -72,13 +72,13 @@ bash ./wizard.sh
 > [!TIP]
 >
 > Most of the [config.json](config.json) file is already pre-filled with data one could already make use of. The only values you will have to change are:
-> - `namTransparent`
-> - `namViewingKey`
-> - `namShielded`
-> - `osmoKey`
-> - `osmoAddress`
+> - `namTransparent`: _alias_
+> - `namViewingKey`: _alias_
+> - `namShielded`: _address_
+> - `osmoKey`: _alias_
+> - `osmoAddress`: _address_
 >
-> You can make these changes using the wizard, but it might be useful to know what the values should look like. See below for more info or check out the [_config.example.json](/config/_config.example.json)-file for an example.
+> You can make these changes using the wizard. See below for more info or check out the [_config.example.json](/config/_config.example.json)-file for an example.
 
 ### Schema
 ```
