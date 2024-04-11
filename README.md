@@ -1,8 +1,11 @@
 # Shielded Swap (CLI based)
 
-An attempt to create a shielded-swap CLI variant for SE.
+A CLI BASED SHIELDED SWAP application for SE.
 
 This has been written by ZENODE and is licensed under the MIT-license (see [LICENSE](./LICENSE)).
+
+> [!NOTE]
+> A partially-working web-based Shielded IBC application can be found at https://zenode.app/explorer/namada/ibc (Shielded OSMO/THETA to Namada works).
 
 ## Requirements
 - [gum](https://github.com/charmbracelet/gum)
@@ -52,6 +55,8 @@ go install github.com/charmbracelet/gum@latest
 curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
 ```
 
+> Or, see: https://docs.osmosis.zone/osmosis-core/osmosisd.
+
 ### 4. Install namada
 
 > See: https://docs.namada.net/introduction/install.
@@ -67,13 +72,13 @@ bash ./wizard.sh
 > [!TIP]
 >
 > Most of the [config.json](config.json) file is already pre-filled with data one could already make use of. The only values you will have to change are:
-> - `namTransparent`
-> - `namViewingKey`
-> - `namShielded`
-> - `osmoKey`
-> - `osmoAddress`
+> - `namTransparent`: _alias_
+> - `namViewingKey`: _alias_
+> - `namShielded`: _address_
+> - `osmoKey`: _alias_
+> - `osmoAddress`: _address_
 >
-> You can make these changes using the wizard, but it might be useful to know what the values should look like. See below for more info or check out the [_config.example.json](/config/_config.example.json)-file for an example.
+> You can make these changes using the wizard. See below for more info or check out the [_config.example.json](/config/_config.example.json)-file for an example.
 
 ### Schema
 ```
