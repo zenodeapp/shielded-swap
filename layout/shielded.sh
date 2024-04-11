@@ -182,7 +182,7 @@ if [ "$MENU_CHOICE" = "$CHOICE_1" ] || [ "$MENU_CHOICE" = "$CHOICE_2" ]; then
             if [ "$(echo "$BALANCE_DIFF > $ESTIMATE_AMOUNT" | bc)" -eq 1 ]; then
               BALANCE_DIFF=$ESTIMATE_AMOUNT
             fi
-            
+
             echo ""
             echo_success "$AMOUNT_TO_TRANSFER $DENOM1_OSMOSIS got swapped for $BALANCE_DIFF $DENOM2_OSMOSIS on osmosis!"
             
@@ -255,9 +255,6 @@ elif [ "$MENU_CHOICE" = "$CHOICE_3" ] || [ "$MENU_CHOICE" = "$CHOICE_4" ]; then
     fi
   fi
   
-  # Shielding
-  namada 
-  # Shielding an asset
   echo "Shielding/Unshielded"
 else
   bash layout/main.sh
