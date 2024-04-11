@@ -10,7 +10,7 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 > This is a partially-working web-based Shielded IBC application (Transparent transfers work + shielded OSMO/THETA to Namada).
 
 > [!IMPORTANT]
-> **Concerning pools:** I already created channels and pools usable for testing on SE! if you need to create a pool, see more details [below](/#channelspools)!
+> **Concerning pools:** I already created channels and pools usable for testing on SE! if you need to create a pool, see more details [below](#channelspools)!
 >
 
 ## Requirements
