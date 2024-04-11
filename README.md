@@ -102,6 +102,7 @@ bash ./wizard.sh
   "namTransparent": alias,
   "namViewingKey": alias,
   "namPayment": address,
+  "namMemo": string,
 
   "osmoKey": alias,
   "osmoAddress": string
