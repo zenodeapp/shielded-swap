@@ -9,6 +9,7 @@
   "namIbc": "ibc/F6EE42E1CC8154EFDC3329174F4A519DCB6C62BAC914DC55B1E624C0BD07880F",
   "namChannel": "channel-1321",
   "osmoChannel": "channel-6903",
+  "namImplicitKey": "",
   "namTransparent": "",
   "namViewingKey": "",
   "namPayment": "",

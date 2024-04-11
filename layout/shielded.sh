@@ -22,7 +22,7 @@ DENOM2_OSMOSIS="uosmo"
 
 # This is temporarily for 'fixing' the IBC shielded transfer on SE
 if [ "$SHIELDED_BROKEN" = 'true' ]; then
-  NAM_ADDRESS="$NAM_TRANSPARENT"
+  NAM_ADDRESS="$NAM_IMPLICIT_KEY"
 else
   NAM_ADDRESS="$NAM_VIEWING_KEY"
 fi
@@ -51,7 +51,7 @@ if [ "$MENU_CHOICE" = "$CHOICE_1" ] || [ "$MENU_CHOICE" = "$CHOICE_2" ]; then
   fi
 
   if [ "$SHIELDED_BROKEN" = 'true' ]; then
-    CONFIRM_ACTION=$(gum confirm "Swapping $DENOM1_NAMADA to $DENOM2_NAMADA while shieldedBroken is true will start the swap action using the transparent address '$NAM_TRANSPARENT', but sends the swapped token back to '$NAM_VIEWING_KEY'. Do you want to continue?" && echo "true" || echo "false")
+    CONFIRM_ACTION=$(gum confirm "Swapping $DENOM1_NAMADA to $DENOM2_NAMADA while shieldedBroken is true will start the swap action using the transparent address '$NAM_IMPLICIT_KEY', but sends the swapped token back to '$NAM_VIEWING_KEY'. Do you want to continue?" && echo "true" || echo "false")
   else
     CONFIRM_ACTION=$(gum confirm "This will swap $DENOM1_NAMADA to $DENOM2_NAMADA using payment address '$(shorten_address "$OSMO_KEY")' and viewing key '$NAM_VIEWING_KEY'. Do you want to continue?" && echo "true" || echo "false")
   fi
@@ -261,10 +261,10 @@ elif [ "$MENU_CHOICE" = "$CHOICE_3" ] || [ "$MENU_CHOICE" = "$CHOICE_4" ]; then
 
   if $SHIELD_ACTION; then
     SHIELD_WORD="shield"
-    CONFIRM_ACTION=$(gum confirm "This will shield assets (from transparent address '$NAM_TRANSPARENT' to payment address '$(shorten_address "$NAM_PAYMENT")'). Do you want to continue?" && echo "true" || echo "false")
+    CONFIRM_ACTION=$(gum confirm "This will shield assets (from transparent address '$NAM_IMPLICIT_KEY' to payment address '$(shorten_address "$NAM_PAYMENT")'). Do you want to continue?" && echo "true" || echo "false")
   else
     SHIELD_WORD="unshield"
-    CONFIRM_ACTION=$(gum confirm "This will unshield assets (from viewing key '$NAM_VIEWING_KEY' to transparent address '$NAM_TRANSPARENT'). Do you want to continue?" && echo "true" || echo "false")
+    CONFIRM_ACTION=$(gum confirm "This will unshield assets (from viewing key '$NAM_VIEWING_KEY' to transparent address '$NAM_IMPLICIT_KEY'). Do you want to continue?" && echo "true" || echo "false")
   fi
 
   if [ "$CONFIRM_ACTION" = "true" ]; then
@@ -286,18 +286,18 @@ elif [ "$MENU_CHOICE" = "$CHOICE_3" ] || [ "$MENU_CHOICE" = "$CHOICE_4" ]; then
 
     if $SHIELD_ACTION; then
       AMOUNT=$(repeat_input_number "How much of $TOKEN would you like to send to $(shorten_address "$NAM_PAYMENT")?" "false")
-      gum spin --show-output --title "Sending $AMOUNT $TOKEN from $NAM_TRANSPARENT to $(shorten_address "$NAM_PAYMENT")..." sleep 1
-      namada client transfer --token $TOKEN --amount $AMOUNT --source $NAM_TRANSPARENT --target $NAM_PAYMENT --chain-id $NAM_CHAIN_ID --node $NAM_RPC --memo "$NAM_MEMO"
+      gum spin --show-output --title "Sending $AMOUNT $TOKEN from $NAM_IMPLICIT_KEY to $(shorten_address "$NAM_PAYMENT")..." sleep 1
+      namada client transfer --token $TOKEN --amount $AMOUNT --source $NAM_IMPLICIT_KEY --target $NAM_PAYMENT --chain-id $NAM_CHAIN_ID --node $NAM_RPC --memo "$NAM_MEMO"
       echo ""
       # TODO: Needs validation
       echo_success "Attemped to shield $AMOUNT $TOKEN (see '$NAM_VIEWING_KEY' address)."
     else
-      AMOUNT=$(repeat_input_number "How much of $TOKEN would you like to send to '$NAM_TRANSPARENT'?" "false")
-      gum spin --show-output --title "Sending $AMOUNT $TOKEN from $(shorten_address "$NAM_VIEWING_KEY") to $(shorten_address "$NAM_TRANSPARENT")..." sleep 1
-      namada client transfer --token $TOKEN --amount $AMOUNT --source $NAM_VIEWING_KEY --target $NAM_TRANSPARENT --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_TRANSPARENT --memo "$NAM_MEMO"
+      AMOUNT=$(repeat_input_number "How much of $TOKEN would you like to send to '$NAM_IMPLICIT_KEY'?" "false")
+      gum spin --show-output --title "Sending $AMOUNT $TOKEN from $(shorten_address "$NAM_VIEWING_KEY") to $(shorten_address "$NAM_IMPLICIT_KEY")..." sleep 1
+      namada client transfer --token $TOKEN --amount $AMOUNT --source $NAM_VIEWING_KEY --target $NAM_IMPLICIT_KEY --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_IMPLICIT_KEY --memo "$NAM_MEMO"
       echo ""
       # TODO: Needs validation
-      echo_success "Attemped to unshield $AMOUNT $TOKEN (see '$NAM_TRANSPARENT' address)."
+      echo_success "Attemped to unshield $AMOUNT $TOKEN (see '$NAM_IMPLICIT_KEY' address)."
     fi
 
     # Give info about next steps

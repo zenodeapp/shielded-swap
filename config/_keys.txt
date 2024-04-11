@@ -8,6 +8,7 @@ namDenom
 namIbc
 namChannel
 osmoChannel
+namImplicitKey
 namTransparent
 namViewingKey
 namPayment

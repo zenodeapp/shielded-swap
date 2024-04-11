@@ -11,10 +11,10 @@ source config/get.sh
 
 # Greeting
 if [ $SHIELDED_BROKEN = 'true' ]; then
-  if [ -z $NAM_TRANSPARENT ]; then
+  if [ -z $NAM_IMPLICIT_KEY ]; then
     echo "Welcome, stranger!"
   else
-    echo "Welcome, $(shorten_address $NAM_TRANSPARENT 21 21)!"
+    echo "Welcome, $(shorten_address $NAM_IMPLICIT_KEY 21 21)!"
   fi
 else
   if [ -z $NAM_VIEWING_KEY ]; then

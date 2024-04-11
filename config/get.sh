@@ -16,6 +16,7 @@ export NAM_IBC=$(jq -r '.namIbc' $CONFIG_FILE)
 export NAM_CHANNEL=$(jq -r '.namChannel' $CONFIG_FILE)
 export OSMO_CHANNEL=$(jq -r '.osmoChannel' $CONFIG_FILE)
 
+export NAM_IMPLICIT_KEY=$(jq -r '.namImplicitKey' $CONFIG_FILE)
 export NAM_TRANSPARENT=$(jq -r '.namTransparent' $CONFIG_FILE)
 export NAM_VIEWING_KEY=$(jq -r '.namViewingKey' $CONFIG_FILE)
 export NAM_PAYMENT=$(jq -r '.namPayment' $CONFIG_FILE)

@@ -12,7 +12,8 @@
   "namChannel": "channel-1321",
   "osmoChannel": "channel-6903",
 
-  "namTransparent": "zen",
+  "namImplicitKey": "zen",
+  "namTransparent": "tnam1qq22qmw72m3e6c8lajx8jmzzh2h4t3dp7cfs4dxf",
   "namViewingKey": "shielded",
   "namPayment": "znam1qqtq5u90nvgq7x0pvfuayykg34td97mjs8p0x333e90rvq5e0lhs43m0gpaxh3pvkqqdpdsjxv83n",
   "namMemo": "tpknam1qz36mzdvdmxvvcpv3c36zzs5v369jauws0tzrxesuaexy0p25r5sy0jsuac",

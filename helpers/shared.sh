@@ -206,10 +206,10 @@ get_namada_transparent_balance() {
   DENOM=$1
   DENOM_REGEX=$(echo "$DENOM" | sed 's/\//\\\//g') # needed to prevent awk from failing over the forward slashes
   
-  if [ -z $DENOM ] || [ -z $NAM_TRANSPARENT ] || [ -z $NAM_CHAIN_ID ] || [ -z $NAM_RPC ]; then
+  if [ -z $DENOM ] || [ -z $NAM_IMPLICIT_KEY ] || [ -z $NAM_CHAIN_ID ] || [ -z $NAM_RPC ]; then
     echo "0"
   else
-    echo "$(namada client balance --chain-id $NAM_CHAIN_ID --owner $NAM_TRANSPARENT --node $NAM_RPC 2>/dev/null | awk "/^$DENOM_REGEX/{print; exit}")" | awk -F ': ' '{print $2}'
+    echo "$(namada client balance --chain-id $NAM_CHAIN_ID --owner $NAM_IMPLICIT_KEY --node $NAM_RPC 2>/dev/null | awk "/^$DENOM_REGEX/{print; exit}")" | awk -F ': ' '{print $2}'
   fi
 }
 
@@ -231,7 +231,7 @@ transfer_ibc_osmosis() {
   AMOUNT="$3"
   IBC_MEMO="$4"
 
-  osmosisd tx ibc-transfer transfer transfer "$OSMO_CHANNEL" $RECEIVER "$AMOUNT$DENOM" --memo $IBC_MEMO --from $OSMO_KEY --node $OSMO_RPC --chain-id $OSMO_CHAIN_ID --fees 1000uosmo -y
+  osmosisd tx ibc-transfer transfer transfer "$OSMO_CHANNEL" $RECEIVER "$AMOUNT$DENOM" --memo "$IBC_MEMO" --from $OSMO_KEY --node $OSMO_RPC --chain-id $OSMO_CHAIN_ID --fees 1000uosmo -y
 }
 
 
@@ -254,7 +254,7 @@ transfer_transparent_ibc_namada() {
   TOKEN="$2"
   AMOUNT="$3"
   
-  namada client ibc-transfer --source $NAM_TRANSPARENT --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --memo "$NAM_MEMO"
+  namada client ibc-transfer --source $NAM_IMPLICIT_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --memo "$NAM_MEMO"
 }
 
 # IBC shielded transfer using namada client (namadac)
@@ -263,7 +263,7 @@ transfer_shielded_ibc_namada() {
   TOKEN="$2"
   AMOUNT="$3"
   
-  namada client ibc-transfer --source $NAM_VIEWING_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_TRANSPARENT --memo "$NAM_MEMO"
+  namada client ibc-transfer --source $NAM_VIEWING_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_IMPLICIT_KEY --memo "$NAM_MEMO"
 }
 
 # Get denom of an IBC coin

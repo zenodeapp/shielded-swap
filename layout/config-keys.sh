@@ -34,7 +34,7 @@ if [ "$MENU_CHOICE" = "$CHOICE_OSMOSIS_KEY" ]; then
   echo_success "The osmoKey value was changed to $ALIAS!"
   gum log --structured --level warn "Make sure to also change the osmoAddress field in the config.json file to the address above!"
 elif [ "$MENU_CHOICE" = "$CHOICE_TRANSPARENT_KEY" ]; then
-  CONFIG_KEY="namTransparent"
+  CONFIG_KEY="namImplicitKey"
   DEFAULT_ALIAS="transparentkey"
   ALIAS=$(gum input --placeholder "What alias would you like to use for this new transparent key? [default: $DEFAULT_ALIAS]")
 
@@ -47,6 +47,7 @@ elif [ "$MENU_CHOICE" = "$CHOICE_TRANSPARENT_KEY" ]; then
 
   echo ""
   echo_success "The $CONFIG_KEY value was changed to $ALIAS!"
+  gum log --structured --level warn "Make sure to change the namTransparent field in the config.json file to the address above!"
 elif [ "$MENU_CHOICE" = "$CHOICE_SHIELDED_KEYS" ]; then
   # Viewing key creation
   CONFIG_KEY="namViewingKey"
