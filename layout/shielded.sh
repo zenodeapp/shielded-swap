@@ -287,14 +287,14 @@ elif [ "$MENU_CHOICE" = "$CHOICE_3" ] || [ "$MENU_CHOICE" = "$CHOICE_4" ]; then
     if $SHIELD_ACTION; then
       AMOUNT=$(repeat_input_number "How much of $TOKEN would you like to send to $(shorten_address "$NAM_PAYMENT")?" "false")
       gum spin --show-output --title "Sending $AMOUNT $TOKEN from $NAM_TRANSPARENT to $(shorten_address "$NAM_PAYMENT")..." sleep 1
-      namada client transfer --token $TOKEN --amount $AMOUNT --source $NAM_TRANSPARENT --target $NAM_PAYMENT --chain-id $NAM_CHAIN_ID --node $NAM_RPC
+      namada client transfer --token $TOKEN --amount $AMOUNT --source $NAM_TRANSPARENT --target $NAM_PAYMENT --chain-id $NAM_CHAIN_ID --node $NAM_RPC --memo "$NAM_MEMO"
       echo ""
       # TODO: Needs validation
       echo_success "Attemped to shield $AMOUNT $TOKEN (see '$NAM_VIEWING_KEY' address)."
     else
       AMOUNT=$(repeat_input_number "How much of $TOKEN would you like to send to '$NAM_TRANSPARENT'?" "false")
       gum spin --show-output --title "Sending $AMOUNT $TOKEN from $(shorten_address "$NAM_VIEWING_KEY") to $(shorten_address "$NAM_TRANSPARENT")..." sleep 1
-      namada client transfer --token $TOKEN --amount $AMOUNT --source $NAM_VIEWING_KEY --target $NAM_TRANSPARENT --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_TRANSPARENT
+      namada client transfer --token $TOKEN --amount $AMOUNT --source $NAM_VIEWING_KEY --target $NAM_TRANSPARENT --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_TRANSPARENT --memo "$NAM_MEMO"
       echo ""
       # TODO: Needs validation
       echo_success "Attemped to unshield $AMOUNT $TOKEN (see '$NAM_TRANSPARENT' address)."

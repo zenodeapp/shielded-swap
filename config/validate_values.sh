@@ -11,7 +11,7 @@ check_config_values() {
   while IFS= read -r key; do
     VALUE=$(jq -r --arg key "$key" '.[$key]' "$CONFIG_FILE")
 
-    if [ -z "$VALUE" ]; then
+    if [ -z "$VALUE" ] && ! [ "$key" = "namMemo" ]; then
       # gum log --structured --level error "$key in the config.json file is empty!"
       ERR_TRIGGERED=true
     fi

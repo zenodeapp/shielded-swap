@@ -254,7 +254,7 @@ transfer_transparent_ibc_namada() {
   TOKEN="$2"
   AMOUNT="$3"
   
-  namada client ibc-transfer --source $NAM_TRANSPARENT --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC
+  namada client ibc-transfer --source $NAM_TRANSPARENT --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --memo "$NAM_MEMO"
 }
 
 # IBC shielded transfer using namada client (namadac)
@@ -263,7 +263,7 @@ transfer_shielded_ibc_namada() {
   TOKEN="$2"
   AMOUNT="$3"
   
-  namada client ibc-transfer --source $NAM_VIEWING_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_TRANSPARENT
+  namada client ibc-transfer --source $NAM_VIEWING_KEY --receiver $RECEIVER --token $TOKEN --amount $AMOUNT --channel-id $NAM_CHANNEL --chain-id $NAM_CHAIN_ID --node $NAM_RPC --signing-keys $NAM_TRANSPARENT --memo "$NAM_MEMO"
 }
 
 # Get denom of an IBC coin

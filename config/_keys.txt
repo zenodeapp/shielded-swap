@@ -11,5 +11,6 @@ osmoChannel
 namTransparent
 namViewingKey
 namPayment
+namMemo
 osmoKey
 osmoAddress

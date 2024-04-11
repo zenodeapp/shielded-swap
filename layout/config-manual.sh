@@ -63,8 +63,8 @@ else
 
     # Confirm changes to be made
     gum confirm "Do you wish to proceed?" \
-      && { modify_config_keys keys_edited values_edited; echo "Changes saved!"; } \
-      || { echo "Changes canceled!"; }
+      && { modify_config_keys keys_edited values_edited; echo_success "Changes saved!"; } \
+      || { echo_fail "Changes canceled!"; }
   fi
 
   # Menu
