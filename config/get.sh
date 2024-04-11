@@ -18,7 +18,7 @@ export OSMO_CHANNEL=$(jq -r '.osmoChannel' $CONFIG_FILE)
 
 export NAM_TRANSPARENT=$(jq -r '.namTransparent' $CONFIG_FILE)
 export NAM_VIEWING_KEY=$(jq -r '.namViewingKey' $CONFIG_FILE)
-export NAM_SHIELDED=$(jq -r '.namShielded' $CONFIG_FILE)
+export NAM_PAYMENT=$(jq -r '.namPayment' $CONFIG_FILE)
 
 export OSMO_KEY=$(jq -r '.osmoKey' $CONFIG_FILE)
 export OSMO_ADDRESS=$(jq -r '.osmoAddress' $CONFIG_FILE)

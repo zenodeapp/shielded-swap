@@ -171,11 +171,11 @@ if [ "$OSMOSIS_UOSMO_BALANCE_VALID" = "true" ] && [ "$NAMADA_NAM_BALANCE_VALID" 
             ### SEND BACK TO NAMADA ###
           header_block "SEND BACK TO NAMADA"
           gum spin --show-output --title "Preparing IBC memo for transfer back..." sleep 2
-          IBC_MEMO=$(gen_ibc_memo "$NAM_SHIELDED" "$DENOM2_OSMOSIS" "$BALANCE_DIFF")
+          IBC_MEMO=$(gen_ibc_memo "$NAM_PAYMENT" "$DENOM2_OSMOSIS" "$BALANCE_DIFF")
           gum log --structured --level info "Generated: $IBC_MEMO."
 
-          gum spin --show-output --title "Sending $BALANCE_DIFF $DENOM2_OSMOSIS to $(shorten_address $NAM_SHIELDED)..." sleep 2
-          transfer_ibc_osmosis "$NAM_SHIELDED" "$DENOM2_OSMOSIS" "$BALANCE_DIFF" "$IBC_MEMO"
+          gum spin --show-output --title "Sending $BALANCE_DIFF $DENOM2_OSMOSIS to $(shorten_address $NAM_PAYMENT)..." sleep 2
+          transfer_ibc_osmosis "$NAM_PAYMENT" "$DENOM2_OSMOSIS" "$BALANCE_DIFF" "$IBC_MEMO"
 
           # End of swap
           echo_success "$AMOUNT_TO_TRANSFER $DENOM1_NAMADA got swapped for $BALANCE_DIFF $DENOM2_NAMADA!"
