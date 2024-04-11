@@ -19,7 +19,7 @@ check_config_values() {
 
   if $ERR_TRIGGERED; then
     # This means a field is empty, so give an error.
-    gum log --structured --level error "Not all required keys are configured, make sure to do this using 4. Configuration!"
+    gum log --structured --level error "Not all required keys are configured, make sure to go to Configuration or manually change config.json!"
     NAM_RPC_VALUE=$(jq -r '.namRpc' "$CONFIG_FILE")
     # Common mistake is to not set the rpc to the correct value, so give a warning if it's on the default!
     if [ "$NAM_RPC_VALUE" = "http://127.0.0.1:26657" ]; then

@@ -10,10 +10,10 @@ source config/set.sh
 CHOICES=$(get_gamm_pool_denoms)
 
 if [ -z "$CHOICES" ]; then
-  gum log --structured --level warn "$OSMO_ADDRESS does not own any pools!"
+  gum log --structured --level warn "$OSMO_KEY does not own any pools!"
   bash layout/pool.sh
 else
-  SELECTED=$(gum choose --header "Pools $OSMO_ADDRESS owns:" $CHOICES)
+  SELECTED=$(gum choose --header "Pools $OSMO_KEY owns:" $CHOICES)
 
   # Extract pool ID from denom
   IFS='/' read -ra PARTS <<< "$SELECTED"
