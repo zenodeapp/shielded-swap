@@ -68,7 +68,7 @@ curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
 ### 5. Run the wizard!
 
 ```
-bash ./wizard.sh
+bash wizard.sh
 ```
 
 ## Configuration
