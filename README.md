@@ -30,11 +30,12 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - Configuration of _slippage_ for shielded swaps
 - Swaps are simulated and give an approximate for the min. amount of tokens the user could receive
 - Namada chain ID can be configured (not exclusively tied to SE)
-- Compatible with broken shielded namada-chains (SE); enabling the `shieldedBroken`-key in [config.json](config.json) lets shielded-swaps perform the **first step** of the action-flow using the _transparent address_ instead of a _shielded address_.
+- Compatible with broken shielded namada-chains (SE); enabling the `shieldedBroken`-key in [config.json](config.json) lets shielded-swaps perform the **first step** of the [Flow of action](#flow-of-action) using the _transparent address_ instead of a _shielded address_.
 - Creating transparent, shielded (viewing key + payment combined) and osmosis keys all in one place
+- Configuring the config.json file from within the wizard, plus validity checker.
 - Balance checker for osmosis, transparent and shielded addresses
 - Written in a modular fashion to promote reusability of code
-- Attempted to add as much error-handling and validity checks as possible for robuster code (e.g. user input validation, type errors, edge case prevention)
+- Attempted to add as much error-handling and validity checks as possible for robustness (e.g. user input validation, type errors, edge case prevention)
  
 ## Quick-start
 
@@ -153,7 +154,7 @@ If you need to create a new pool, I usually used the following settings:
 >
 > The wizard makes sure to always ask for your consent when it wants to run this command.
 
-### Shielded action
+### Flow of action
 
 This is an overall explanation of what happens during a shielded-swap. Details like configuring slippage, balance checking and error-handling have been omitted but can be experienced in the wizard or seen in the code itself (mostly in [layout/shielded.sh](layout/shielded.sh)).
 
