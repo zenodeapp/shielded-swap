@@ -1,8 +1,11 @@
 # Shielded Swap (CLI based)
 
-An attempt to create a shielded-swap CLI variant for SE.
+A CLI BASED SHIELDED SWAP application for SE.
 
 This has been written by ZENODE and is licensed under the MIT-license (see [LICENSE](./LICENSE)).
+
+> [!NOTE]
+> A partially-working web-based Shielded IBC application can be found at https://zenode.app/explorer/namada/ibc (Shielded OSMO/THETA to Namada works).
 
 ## Requirements
 - [gum](https://github.com/charmbracelet/gum)
@@ -51,6 +54,8 @@ go install github.com/charmbracelet/gum@latest
 ```
 curl -sL https://get.osmosis.zone/install > i.py && python3 i.py
 ```
+
+> Or, see: https://docs.osmosis.zone/osmosis-core/osmosisd.
 
 ### 4. Install namada
 
