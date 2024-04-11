@@ -176,6 +176,13 @@ if [ "$MENU_CHOICE" = "$CHOICE_1" ] || [ "$MENU_CHOICE" = "$CHOICE_2" ]; then
             # Calculate the difference in balance before and after the swap for the token we're preparing to send back to Namada
             BALANCE_DIFF=$(bc <<< "$BALANCE_RECEIVER - $BALANCE_TARGET_COUNTER")
 
+            # Make sure not to give more than we expected at max (Upper bound)
+            # Imagine a scenario where someone sends a lot of tokens to this address at the same time.
+            # This would cause the shielded swap to send back all those tokens as well if we only took BALANCE_DIFF into account.
+            if [ "$(echo "$BALANCE_DIFF > $ESTIMATE_AMOUNT" | bc)" -eq 1 ]; then
+              BALANCE_DIFF=$ESTIMATE_AMOUNT
+            fi
+            
             echo ""
             echo_success "$AMOUNT_TO_TRANSFER $DENOM1_OSMOSIS got swapped for $BALANCE_DIFF $DENOM2_OSMOSIS on osmosis!"
             
