@@ -23,7 +23,8 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 - Swaps are simulated and give an approximate for the min. amount of tokens the user could receive
 - Namada chain ID can be configured (not exclusively tied to SE)
 - Compatible with broken shielded namada-chains (SE); enabling the `shieldedBroken`-key in [config.json](config.json) lets shielded-swaps perform the **first step** of the action flow using the transparent address
-- Simple method to call a shielded-sync before fetching balances
+- Smart shielded-sync; the places where a shielded-sync may need to be performed are indicated
+- Creating transparent, shielded (viewing key + payment combined) and osmosis keys all in one place
 - Shows balances for osmosis, transparent and shielded addresses
 - Written in a modular fashion to promote reusability of code
 - Attempted to add as much error-handling as possible for robuster code (e.g. user input validation, type errors, edge cases)
@@ -74,7 +75,7 @@ bash ./wizard.sh
 > Most of the [config.json](config.json) file is already pre-filled with data one could already make use of. The only values you will have to change are:
 > - `namTransparent`: _alias_
 > - `namViewingKey`: _alias_
-> - `namShielded`: _address_
+> - `namPayment`: _address_
 > - `osmoKey`: _alias_
 > - `osmoAddress`: _address_
 >
@@ -97,7 +98,7 @@ bash ./wizard.sh
 
   "namTransparent": alias,
   "namViewingKey": alias,
-  "namShielded": address,
+  "namPayment": address,
 
   "osmoKey": alias,
   "osmoAddress": string
