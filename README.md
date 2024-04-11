@@ -8,6 +8,8 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 > If you need to send funds over from Osmosis to Namada or vice versa, head over to https://zenode.app/explorer/namada/ibc.
 >
 > This is a partially-working web-based Shielded IBC application (Transparent transfers work + shielded OSMO/THETA to Namada).
+>
+> > It's also possible to fund your wallet using the _Fund your wallet(s)_ section inside the wizard.
 
 ## Requirements
 - [gum](https://github.com/charmbracelet/gum)
@@ -78,7 +80,8 @@ bash wizard.sh
 > [!TIP]
 >
 > Most of the [config.json](config.json) file is already pre-filled with data one could already make use of. The only values you will have to change are:
-> - `namTransparent`: _alias_
+> - `namImplicitKey`: _alias_
+> - `namTransparent`: _address_
 > - `namViewingKey`: _alias_
 > - `namPayment`: _address_
 > - `osmoKey`: _alias_
@@ -101,7 +104,8 @@ bash wizard.sh
   "namChannel": string,
   "osmoChannel": string,
 
-  "namTransparent": alias,
+  "namImplicitKey": alias,
+  "namTransparent": address,
   "namViewingKey": alias,
   "namPayment": address,
   "namMemo": string,
@@ -119,6 +123,10 @@ bash wizard.sh
 #### namRpc and osmoRpc
 
 Make sure to also include the port number for `osmoRpc`, else `osmosisd` won't let transactions through. Possibly also the case for `namRpc`.
+
+#### namImplicitKey and namTransparent
+
+Make sure to let these two point to the same address.
 
 #### osmoKey and osmoAddress
 
@@ -164,7 +172,7 @@ This is an overall explanation of what happens during a shielded-swap. Details l
 
 - Swapping of any type of token, not just naan <=> uosmo pairs would have been possible if I refactored the code further. The wizard depends mostly on which pool is selected, thus treating this as the indicator to which two tokens the user wanted to swap would have been feasible!
 - Implementing more tutorial-like workflows for changing the [config](config.json)-file would have made it easier to get started.
-- The [config](config.json)-file is currently quite bloated. Some values could have been fetched and stored into an auto-generated static-config.json file (e.g. like deriving `osmoAddress` from the `osmoKey`).
+- The [config](config.json)-file is currently quite bloated. Some values could have been fetched and stored into an auto-generated static-config.json file (e.g. like deriving `osmoAddress` from the `osmoKey` and `namTransparent` from the `namImplicitKey`).
 - [Issue #1](https://github.com/zenodeapp/shielded-swap/issues/1)
 
 </br>
