@@ -20,22 +20,31 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 
 ## Features
 
+ ### General
+- Written in a modular fashion to promote reusability of code
+- Attempted to add as much error-handling and validity checks as possible for robustness (e.g. user input validation, type errors, etc.)
+- Configure the config.json file from within the wizard (plus auto-validity checker implemented)
+- Namada chain ID can be configured (not exclusively tied to SE)
+
+### Shielded
 - Able to perform shielded-swaps between _naan <=> uosmo_ (shielded actions)
 - Configure _slippage_ for shielded swaps
 - Swaps are simulated and give an approximate for the min. amount of tokens the user could receive
 - Able to shield and unshield assets (shielded actions)
 - Smart shielded-syncing; indicates whenever a shielded-sync should be performed
-- Allows for a simple way to _create naan-uosmo pools_
-- Lists all osmosis pools the user is a part of (for quickly switching between created pools)
-- Shows selected pool information
-- Namada chain ID can be configured (not exclusively tied to SE)
 - Compatible with broken shielded namada-chains (SE) by enabling the `shieldedBroken`-key in [config.json](config.json). See more about this in section [shieldedBroken](#shieldedbroken) or [Flow of action](#flow-of-action).
-- Creating transparent, shielded (viewing key + payment combined) and osmosis keys made easy
-- Configure the config.json file from within the wizard (plus auto-validity checker)
+
+ ### Pools
+- Allows for a simple way to _create naan-uosmo pools_
+- List all osmosis pools the user is a part of (for quickly switching between created pools)
+- Show information for the selected pool
+
+### Balance
 - Balance checker for osmosis, transparent and shielded addresses
-- Written in a modular fashion to promote reusability of code
-- Attempted to add as much error-handling and validity checks as possible for robustness (e.g. user input validation, type errors, etc.)
- 
+- Able to fund your linked osmosis or namada wallet with, respectively, naan or uosmo
+- Creating new transparent, shielded (viewing key + payment combined) and osmosis keys made easy
+
+
 ## Quick-start
 
 ### 1. Install jq and bc
@@ -118,7 +127,7 @@ bash wizard.sh
 
 #### shieldedBroken
 
-`shieldedBroken` should only be set to `true` if the Namada chain isn't able to perform a _shielded_ IBC transfer to an external chain (the reject VP issue). What this does is tell the wizard to instead use the _transparent address_ for the **initial transfer** of NAAN/OSMO from Namada to Osmosis.
+`shieldedBroken` should only be set to `true` if the Namada chain isn't able to perform a _shielded_ IBC transfer to an external chain (the reject VP issue). What this does is tell the wizard to instead use the _transparent address_ for the **initial transfer** of _naan/uosmo from Namada_ to Osmosis.
 
 #### namRpc and osmoRpc
 
@@ -149,7 +158,7 @@ If you need to create a new pool, I usually used the following settings:
 - 1000000000 uosmo (1000 OSMO) and
 - 200 naan
 
-> This seemed to work well for me; just make sure not to create _too small pools_ or try to swap _too little amounts_, else shielded swaps will fail.
+> This seems to work well for me; just make sure not to create _too small pools_ or try to swap _too little amounts_, else shielded swaps will fail.
 
 ### Shielded-sync
 
