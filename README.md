@@ -9,6 +9,10 @@ This has been written by ZENODE and is licensed under the MIT-license (see [LICE
 >
 > This is a partially-working web-based Shielded IBC application (Transparent transfers work + shielded OSMO/THETA to Namada).
 
+> [!IMPORTANT]
+> **Concerning pools:** I already created channels and pools usable for testing on SE! if you need to create a pool, see more details [below](/#channelspools)!
+>
+
 ## Requirements
 - [gum](https://github.com/charmbracelet/gum)
 - [osmosisd](https://docs.osmosis.zone/osmosis-core/osmosisd)
@@ -126,13 +130,20 @@ Make sure to let these two point to the same address.
 
 ### Channels/pools
 
+#### Existing
 I already created the following channels and pools that can be used:
 - ibc `channel-1321 <=> channel-6903`
 - ibc/denom `ibc/F6EE42E1CC8154EFDC3329174F4A519DCB6C62BAC914DC55B1E624C0BD07880F`
 - pool(s) `445` and `447`
 
-> [!NOTE]
-> I created pools that usually contained 1000000000 uosmo (1000 OSMO) and 200 naan with a ratio of 5:1. This seemed to work somewhat well for me! If you need any OSMO for testing, just ask!
+#### New
+
+If you need to create a new pool, I usually used the following settings:
+- A ratio of 5:1
+- 1000000000 uosmo (1000 OSMO) and
+- 200 naan
+
+> This seemed to work well for me; just make sure not to create _too small pools_ or try to swap _too little amounts_, else shielded swaps will fail.
 
 ### Shielded-sync
 
