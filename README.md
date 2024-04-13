@@ -88,7 +88,7 @@ bash wizard.sh
 
 > [!TIP]
 >
-> Most of the [config.json](config.json) file is already pre-filled with data one could already make use of. The only values you will have to change are:
+> Most of the [config.json](config.json) file is already pre-filled with data one could make use of. The only values you will have to change are:
 > - `namImplicitKey`: _alias_
 > - `namTransparent`: _address_
 > - `namViewingKey`: _alias_
@@ -183,6 +183,7 @@ This is an overall explanation of what happens during a shielded-swap. Details l
 - Implementing more tutorial-like workflows for changing the [config](config.json)-file would have made it easier to get started.
 - The [config](config.json)-file is currently quite bloated. Some values could have been fetched and stored into an auto-generated static-config.json file (e.g. like deriving `osmoAddress` from the `osmoKey` and `namTransparent` from the `namImplicitKey`).
 - [Issue #1](https://github.com/zenodeapp/shielded-swap/issues/1)
+- [Issue #2](https://github.com/zenodeapp/shielded-swap/issues/2)
 
 </br>
 
